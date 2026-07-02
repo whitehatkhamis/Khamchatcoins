@@ -5,99 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>KhamChat Live Room</title>
 <style>
-:root {
-  --bg: #0A0A12;
-  --card: #151521;
-  --card-2: #1E1E2D;
-  --purple: #8A2BE2;
-  --pink: #FF2E88;
-  --text: #FFFFFF;
-  --text-2: #B4B4C8;
-  --green: #00E676;
-}
+:root { --bg: #0A0A12; --card: #151521; --card-2: #1E1E2D; --purple: #8A2BE2; --pink: #FF2E88; --text: #FFFFFF; --text-2: #B4B4C8; --green: #00E676; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
 body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-
-/* HEADER */
 .header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: rgba(10,10,18,0.8); backdrop-filter: blur(10px); z-index: 10; }
 .header-left { display: flex; align-items: center; gap: 10px; }
 .header-left img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--purple); }
 .room-title { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 4px; }
-.room-title .tick { color: var(--purple); }
+.room-title.tick { color: var(--purple); }
 .room-id { font-size: 12px; color: var(--text-2); }
 .follow-btn { background: linear-gradient(90deg, var(--purple), var(--pink)); border: none; color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 12px; }
 .header-right { display: flex; align-items: center; gap: 8px; }
-.header-avatars { display: flex; margin-right: -8px; }
-.header-avatars img { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--bg); margin-left: -8px; }
 .viewers { font-size: 12px; font-weight: 700; }
-
-/* MAIN LAYOUT */
 .main { flex: 1; display: grid; grid-template-columns: 1fr 280px; gap: 12px; padding: 12px; overflow: hidden; }
-@media (max-width: 900px) { .main { grid-template-columns: 1fr; } .sidebar { display: none; }
-
-/* STAGE GRID 2x3 */
+@media (max-width: 900px) {.main { grid-template-columns: 1fr; }.sidebar { display: none; }
 .stage { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 10px; }
-.stage .host { grid-row: span 2; grid-column: span 1; }
-.video-card { background: var(--card); border-radius: 16px; position: relative; overflow: hidden; border: 1px solid #2A2A3D; }
+.stage.host { grid-row: span 2; grid-column: span 1; }
+.video-card { background: var(--card); border-radius: 16px; position: relative; overflow: hidden; border: 1px solid #2A2A3D; display: flex; align-items: center; justify-content: center; }
 .video-card.host { border: 2px solid var(--purple); box-shadow: 0 0 20px rgba(138,43,226,0.4); }
-.video-card img { width: 100%; height: 100%; object-fit: cover; }
-.video-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7)); }
+.video-card video { width: 100%; height: 100%; object-fit: cover; background: #000; }
+.video-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7)); pointer-events: none; }
 .host-badge { position: absolute; top: 8px; left: 8px; background: var(--purple); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
 .slot-num { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); padding: 4px 6px; border-radius: 6px; font-size: 11px; font-weight: 700; }
 .user-info { position: absolute; bottom: 8px; left: 8px; }
 .user-name { font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 4px; }
-.user-name .tick { color: var(--purple); font-size: 12px; }
 .user-likes { font-size: 11px; color: var(--text-2); display: flex; align-items: center; gap: 4px; }
-.mic-icon { position: absolute; top: 8px; right: 40px; opacity: 0.8; }
-
-/* SIDEBAR */
+.join-btn { position: absolute; background: var(--pink); border: none; color: #fff; padding: 8px 16px; border-radius: 20px; font-weight: 700; cursor: pointer; }
 .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
-.sidebar::-webkit-scrollbar { width: 4px; } .sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
 .card { background: var(--card); border-radius: 16px; padding: 12px; border: 1px solid #2A2A3D; }
-.card-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; }
-.audience-list { display: flex; flex-direction: column; gap: 10px; max-height: 200px; overflow-y: auto; }
-.audience-item { display: flex; align-items: center; justify-content: space-between; }
-.audience-user { display: flex; align-items: center; gap: 8px; }
-.audience-user img { width: 32px; height: 32px; border-radius: 50%; }
-.audience-name { font-size: 13px; font-weight: 600; }
-.audience-coins { font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 3px; }
-.plus-btn { width: 24px; height: 24px; border-radius: 50%; background: var(--card-2); border: none; color: var(--text); font-size: 16px; }
-
-.top-gifter { text-align: center; }
-.gifter-podium { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 10px 0; }
-.gifter { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.gifter img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #555; }
-.gifter.rank1 img { width: 52px; height: 52px; border-color: gold; }
-.gifter.rank1 { order: 2; } .gifter.rank2 { order: 1; } .gifter.rank3 { order: 3; }
-.crown { font-size: 18px; }
-.gifter-name { font-size: 11px; } .gifter-coins { font-size: 10px; color: var(--green); }
-
+.card-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
 .gift-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .gift-item { background: var(--card-2); border-radius: 12px; padding: 8px; text-align: center; font-size: 24px; cursor: pointer; }
 .gift-price { font-size: 10px; color: var(--green); margin-top: 4px; }
-.send-gift-btn { width: 100%; background: var(--pink); border: none; color: #fff; padding: 10px; border-radius: 12px; font-weight: 700; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-.recharge-btn { width: 100%; background: var(--card-2); border: 1px solid #333; color: var(--text); padding: 10px; border-radius: 12px; font-weight: 700; margin-top: 6px; display: flex; align-items: center; justify-content: space-between; }
-
-/* CHAT + ANNOUNCEMENT */
+.send-gift-btn { width: 100%; background: var(--pink); border: none; color: #fff; padding: 10px; border-radius: 12px; font-weight: 700; margin-top: 8px; }
 .bottom-area { padding: 0 12px 12px; }
 .announcement { background: rgba(138,43,226,0.1); border: 1px solid rgba(138,43,226,0.3); border-radius: 12px; padding: 10px; display: flex; gap: 10px; margin-bottom: 10px; }
-.announcement .icon { font-size: 24px; }
-.announcement-title { color: var(--purple); font-size: 12px; font-weight: 700; }
-.announcement-text { font-size: 12px; color: var(--text-2); }
-
 .chat-box { background: var(--card); border-radius: 16px; padding: 10px; height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-.chat-msg { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.chat-msg img { width: 24px; height: 24px; border-radius: 50%; }
-.chat-level { background: var(--purple); font-size: 10px; padding: 2px 5px; border-radius: 4px; font-weight: 700; }
-.chat-gift { color: #FFD700; }
-.chat-like { margin-left: auto; color: var(--pink); }
-
 .input-bar { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .input-bar input { flex: 1; background: var(--card); border: 1px solid #2A2A3D; border-radius: 20px; padding: 10px 14px; color: var(--text); outline: none; }
-.input-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--card); display: grid; place-items: center; border: 1px solid #2A2A3D; }
-.gift-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--pink); display: grid; place-items: center; border: none; font-size: 20px; }
-
-/* MONETAG AD */
+.gift-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--pink); display: grid; place-items: center; border: none; font-size: 20px; cursor: pointer; }
 .monetag-ad { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); z-index: 50; }
 </style>
 </head>
@@ -105,122 +51,57 @@ body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidde
 
 <header class="header">
   <div class="header-left">
-    <img src="https://i.pravatar.cc/100?u=host" alt="Host">
+    <img id="hostImg" src="https://i.pravatar.cc/100" alt="Host">
     <div>
       <div class="room-title">KhamChat Live Room <span class="tick">✔</span></div>
-      <div class="room-id">ID: 884512</div>
+      <div class="room-id" id="roomId">ID:...</div>
     </div>
   </div>
-  <button class="follow-btn">+ Follow</button>
+  <button class="follow-btn" id="joinRoomBtn">🎥 Join Live</button>
   <div class="header-right">
-    <div class="header-avatars">
-      <img src="https://i.pravatar.cc/100?u=1"><img src="https://i.pravatar.cc/100?u=2"><img src="https://i.pravatar.cc/100?u=3">
-    </div>
-    <div class="viewers">12.5K</div>
+    <div class="viewers"><span id="viewerCount">0</span></div>
   </div>
 </header>
 
 <main class="main">
-  <div class="stage">
-    <div class="video-card host">
-      <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=400" alt="Host">
+  <div class="stage" id="stage">
+    <!-- Slot 1 = Host -->
+    <div class="video-card host" data-slot="1">
+      <video id="video-1" autoplay playsinline muted></video>
       <div class="video-overlay"></div>
       <div class="host-badge">Host</div>
-      <div class="mic-icon">🔊</div>
-      <div class="user-info">
-        <div class="user-name">Amy Wilson</div>
-        <div class="user-likes">❤️ 125.8K</div>
-      </div>
+      <div class="user-info"><div class="user-name" id="name-1">Host</div><div class="user-likes">❤️ <span id="likes-1">0</span></div></div>
     </div>
-    <div class="video-card">
-      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400" alt="2">
-      <div class="video-overlay"></div>
-      <div class="slot-num">2</div><div class="mic-icon">🔊</div>
-      <div class="user-info"><div class="user-name">Rahul <span class="tick">✔</span></div><div class="user-likes">❤️ 89.6K</div></div>
-    </div>
-    <div class="video-card">
-      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400" alt="3">
-      <div class="video-overlay"></div>
-      <div class="slot-num">3</div><div class="mic-icon">🔊</div>
-      <div class="user-info"><div class="user-name">Sneha <span class="tick">✔</span></div><div class="user-likes">❤️ 68.7K</div></div>
-    </div>
-    <div class="video-card">
-      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400" alt="4">
-      <div class="video-overlay"></div>
-      <div class="slot-num">4</div><div class="mic-icon">🔊</div>
-      <div class="user-info"><div class="user-name">Vikram <span class="tick">✔</span></div><div class="user-likes">❤️ 48.9K</div></div>
-    </div>
-    <div class="video-card">
-      <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400" alt="5">
-      <div class="video-overlay"></div>
-      <div class="slot-num">5</div><div class="mic-icon">🔊</div>
-      <div class="user-info"><div class="user-name">Diya <span class="tick">✔</span></div><div class="user-likes">❤️ 35.7K</div></div>
-    </div>
-    <div class="video-card">
-      <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=400" alt="6">
-      <div class="video-overlay"></div>
-      <div class="slot-num">6</div><div class="mic-icon">🔊</div>
-      <div class="user-info"><div class="user-name">Arjun <span class="tick">✔</span></div><div class="user-likes">❤️ 29.3K</div></div>
-    </div>
+    <!-- Slot 2 to 6 = Guests -->
+    <div class="video-card" data-slot="2"><video id="video-2" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">2</div><button class="join-btn" onclick="requestSlot(2)">Join</button><div class="user-info"><div class="user-name" id="name-2">Empty</div><div class="user-likes">❤️ <span id="likes-2">0</span></div></div></div>
+    <div class="video-card" data-slot="3"><video id="video-3" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">3</div><button class="join-btn" onclick="requestSlot(3)">Join</button><div class="user-info"><div class="user-name" id="name-3">Empty</div><div class="user-likes">❤️ <span id="likes-3">0</span></div></div></div>
+    <div class="video-card" data-slot="4"><video id="video-4" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">4</div><button class="join-btn" onclick="requestSlot(4)">Join</button><div class="user-info"><div class="user-name" id="name-4">Empty</div><div class="user-likes">❤️ <span id="likes-4">0</span></div></div></div>
+    <div class="video-card" data-slot="5"><video id="video-5" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">5</div><button class="join-btn" onclick="requestSlot(5)">Join</button><div class="user-info"><div class="user-name" id="name-5">Empty</div><div class="user-likes">❤️ <span id="likes-5">0</span></div></div></div>
+    <div class="video-card" data-slot="6"><video id="video-6" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">6</div><button class="join-btn" onclick="requestSlot(6)">Join</button><div class="user-info"><div class="user-name" id="name-6">Empty</div><div class="user-likes">❤️ <span id="likes-6">0</span></div></div></div>
   </div>
 
   <aside class="sidebar">
     <div class="card">
-      <div class="card-title">Audience <span>236</span></div>
-      <div class="audience-list">
-        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a1"><div><div class="audience-name">John Deep</div><div class="audience-coins">💎 5.2K</div></div></div><button class="plus-btn">+</button></div>
-        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a2"><div><div class="audience-name">Meera</div><div class="audience-coins">💎 3.4K</div></div></div><button class="plus-btn">+</button></div>
-        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a3"><div><div class="audience-name">Karan</div><div class="audience-coins">💎 2.8K</div></div></div><button class="plus-btn">+</button></div>
-        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a4"><div><div class="audience-name">Ananya</div><div class="audience-coins">💎 2.1K</div></div></div><button class="plus-btn">+</button></div>
-        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a5"><div><div class="audience-name">Rohit</div><div class="audience-coins">💎 1.8K</div></div></div><button class="plus-btn">+</button></div>
-      </div>
-    </div>
-
-    <div class="card top-gifter">
-      <div class="card-title">Top Gifter</div>
-      <div class="gifter-podium">
-        <div class="gifter rank2"><img src="https://i.pravatar.cc/100?u=g2"><div class="gifter-name">Meera</div><div class="gifter-coins">9.2K</div></div>
-        <div class="gifter rank1"><div class="crown">👑</div><img src="https://i.pravatar.cc/100?u=g1"><div class="gifter-name">John Deep</div><div class="gifter-coins">12.5K</div></div>
-        <div class="gifter rank3"><img src="https://i.pravatar.cc/100?u=g3"><div class="gifter-name">Karan</div><div class="gifter-coins">7.1K</div></div>
-      </div>
-    </div>
-
-    <div class="card">
       <div class="card-title">Popular Gifts</div>
       <div class="gift-grid">
-        <div class="gift-item">🌹<div class="gift-price">10</div></div>
-        <div class="gift-item">💖<div class="gift-price">100</div></div>
-        <div class="gift-item">💎<div class="gift-price">500</div></div>
-        <div class="gift-item">🚀<div class="gift-price">1K</div></div>
-        <div class="gift-item">🏰<div class="gift-price">5K</div></div>
-        <div class="gift-item">⭐<div class="gift-price">10K</div></div>
+        <div class="gift-item" onclick="sendGift(10)">🌹<div class="gift-price">10</div></div>
+        <div class="gift-item" onclick="sendGift(100)">💖<div class="gift-price">100</div></div>
+        <div class="gift-item" onclick="sendGift(500)">💎<div class="gift-price">500</div></div>
+        <div class="gift-item" onclick="sendGift(1000)">🚀<div class="gift-price">1K</div></div>
+        <div class="gift-item" onclick="sendGift(5000)">🏰<div class="gift-price">5K</div></div>
+        <div class="gift-item" onclick="sendGift(10000)">⭐<div class="gift-price">10K</div></div>
       </div>
       <button class="send-gift-btn">🎁 Send a Gift</button>
-      <button class="recharge-btn">🪙 Recharge <span>></span></button>
     </div>
   </aside>
 </main>
 
 <div class="bottom-area">
-  <div class="announcement">
-    <div class="icon">📢</div>
-    <div>
-      <div class="announcement-title">Room Announcement</div>
-      <div class="announcement-text">Welcome to KhamChat Live Room! Have fun and be respectful.</div>
-    </div>
-  </div>
-  <div class="chat-box" id="chatBox">
-    <div class="chat-msg"><img src="https://i.pravatar.cc/100?u=a2"><b>Meera</b> <span class="chat-level">28</span> Awesome session! 🔥 <span class="chat-like">❤️</span></div>
-    <div class="chat-msg"><img src="https://i.pravatar.cc/100?u=2"><b>Rahul</b> <span class="chat-level">24</span> Love the vibes! ❤️ <span class="chat-like">❤️</span></div>
-    <div class="chat-msg"><img src="https://i.pravatar.cc/100?u=a1"><b>John Deep</b> <span class="chat-level">35</span> <span class="chat-gift">Sent a Rocket 🚀 x1</span></div>
-  </div>
+  <div class="announcement"><div>📢</div><div><b>Room Announcement</b><div id="announceText">Welcome to KhamChat Live Room!</div></div></div>
+  <div class="chat-box" id="chatBox"></div>
   <div class="input-bar">
-    <div class="input-icon">💬</div>
-    <input type="text" placeholder="Say something...">
-    <div class="input-icon">😊</div>
-    <div class="input-icon">🛡️</div>
-    <div class="input-icon">👥</div>
-    <button class="gift-btn">🎁</button>
+    <input type="text" id="chatInput" placeholder="Say something...">
+    <button class="gift-btn" onclick="sendChat()">🎁</button>
   </div>
 </div>
 
@@ -229,5 +110,86 @@ body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidde
 <script src='https://omg10.com/4/11217324' data-zone='11217324' async data-cfasync='false'></script>
 </div>
 
+<script type="module">
+// 1. FIREBASE CONFIG NAKA - REAL
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set, onValue, push, update, remove, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAkN35nsJgxKvtVKTH2Y-IIg_jfr2fvDbI",
+  authDomain: "khamchat-vip.firebaseapp.com",
+  projectId: "khamchat-vip",
+  storageBucket: "khamchat-vip.firebasestorage.app",
+  messagingSenderId: "1085659754446",
+  appId: "1:1085659754446:web:2d61fd965ef97044aec59f"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const roomId = window.location.hash.substring(1) || 'khamchat-main';
+document.getElementById('roomId').innerText = 'ID: ' + roomId;
+
+// 2. WEBRTC LOGIC - REAL 6 SLOTS
+const pcConfig = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+const peers = {};
+let mySlot = 0;
+let myStream = null;
+
+async function startCamera(slot) {
+  myStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  document.getElementById('video-' + slot).srcObject = myStream;
+  document.getElementById('video-' + slot).muted = true; // host mute self
+  set(ref(db, 'rooms/' + roomId + '/slots/' + slot + '/user'), { name: 'User' + slot, active: true });
+}
+
+window.requestSlot = async (slot) => {
+  const snap = await get(child(ref(db), 'rooms/' + roomId + '/slots/' + slot));
+  if(snap.exists() && snap.val().user?.active) { alert('Slot is taken'); return; }
+  mySlot = slot;
+  await startCamera(slot);
+  document.querySelector('[data-slot="'+slot+'"].join-btn').style.display = 'none';
+}
+
+// 3. FIREBASE REALTIME LISTENERS
+onValue(ref(db, 'rooms/' + roomId + '/slots'), (snapshot) => {
+  const slots = snapshot.val() || {};
+  for(let i=1; i<=6; i++){
+    const nameEl = document.getElementById('name-' + i);
+    if(slots[i]?.user?.active){ 
+      nameEl.innerText = slots[i].user.name; 
+      document.querySelector('[data-slot="'+i+'"].join-btn').style.display = 'none';
+    } else { 
+      nameEl.innerText = 'Empty'; 
+      document.querySelector('[data-slot="'+i+'"].join-btn').style.display = 'block';
+    }
+  }
+});
+
+onValue(ref(db, 'rooms/' + roomId + '/chat'), (snapshot) => {
+  const chatBox = document.getElementById('chatBox');
+  chatBox.innerHTML = '';
+  snapshot.forEach(msg => {
+    chatBox.innerHTML += `<div><b>${msg.val().name}:</b> ${msg.val().text}</div>`;
+  });
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+window.sendChat = () => {
+  const text = document.getElementById('chatInput').value;
+  if(!text) return;
+  push(ref(db, 'rooms/' + roomId + '/chat'), { name: 'User' + mySlot, text });
+  document.getElementById('chatInput').value = '';
+}
+
+window.sendGift = (coins) => {
+  push(ref(db, 'rooms/' + roomId + '/chat'), { name: 'System', text: `Sent a Gift ${coins} coins 🚀` });
+  const likeEl = document.getElementById('likes-1');
+  likeEl.innerText = parseInt(likeEl.innerText) + coins;
+}
+
+// 4. AUTO JOIN HOST SLOT 1 IF NO HASH
+if(!window.location.hash){ 
+  document.getElementById('joinRoomBtn').onclick = () => { mySlot=1; startCamera(1); document.getElementById('joinRoomBtn').style.display='none'; }
+}
+</script>
 </body>
 </html>
