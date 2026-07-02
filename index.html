@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khamchat Earn</title>
+<style>
+  body { font-family: sans-serif; text-align: center; background: #0f172a; color: white; padding: 20px; }
+  .box { background: #1e293b; padding: 20px; border-radius: 15px; margin: 15px 0; }
+  .btn { background: #22c55e; color: white; padding: 15px; border-radius: 10px; border: none; width: 100%; font-size: 18px; margin-top: 10px; cursor: pointer; }
+  #balance { font-size: 28px; font-weight: bold; color: #facc15; }
+</style>
+</head>
+<body>
+
+  <h1>💰 Khamchat Earn</h1>
+  
+  <div class="box">
+    <p>Balance Naka</p>
+    <div id="balance">0 Coins</div>
+  </div>
+
+  <div class="box">
+    <h2>Earn Free Coins</h2>
+    <button class="btn" id="monetag-btn">Kalli Ad +50 Coins</button>
+  </div>
+
+  <div class="box">
+    <h2>Shop - Redeem</h2>
+    <button class="btn" onclick="redeem(500)">500 Coins = $5 Airtime</button>
+    <button class="btn" onclick="redeem(1000)">1000 Coins = $10 Airtime</button>
+  </div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAmFU0LSN5r0yYRyu2m5_sawLlZVpAM8a0",
+    authDomain: "khamchatcoins.firebaseapp.com",
+    databaseURL: "https://khamchatcoins-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "khamchatcoins",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  
+  const userId = "user_test_1"; 
+  const balanceRef = db.ref('users/' + userId + '/balance');
+
+  balanceRef.on('value', (s) => {
+    document.getElementById('balance').innerText = (s.val() || 0) + " Coins";
+  });
+  
+  function addCoins(a){ balanceRef.set((s)=> (s.val()||0)+a); }
+
+  function redeem(need){
+    balanceRef.once('value').then(s=>{
+      let bal = s.val()||0;
+      if(bal >= need){ 
+        balanceRef.set(bal-need); 
+        alert("An cire "+need+" Coins. Za mu tura maka Airtime nan ba da jimawa ba.");
+      } else { alert("Balance baya isa. Kana bukatar "+need); }
+    });
+  }
+
+  // MONETAG ZAI ZO ANAN
+  document.getElementById('monetag-btn').onclick = () => {
+    alert("Daga baya Monetag zai bude nan. Yanzu don gwaji: +50 Coins");
+    addCoins(50); // Wannan don gwaji kawai
+  }
+</script>
+</body>
+</html>
