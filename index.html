@@ -5,58 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KhamChatCoins - VIP Party</title>
 <style>
-  /* === SAME STYLE AS BEFORE === */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-  body {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-    background-attachment: fixed;
-    min-height: 100vh;
-    overflow-y: auto; 
-    padding: 20px;
-    color: #1a1a1a; /* BLACK TEXT */
-  }
- .container { max-width: 500px; margin: 0 auto; }
- .glass {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  }
+  body { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%); background-attachment: fixed; min-height: 100vh; overflow-y: auto; padding: 20px; color: #1a1a1a; }
+.container { max-width: 500px; margin: 0 auto; }
+.glass { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); }
   h1, h2, h3, p, span, div { color: #1a1a1a; text-shadow: none; }
- .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
- .topbar span { font-weight: 700; font-size: 16px; }
- .btn-shop { background: #000; color: #fff!important; border: none; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
-  h1 { text-align: center; font-size: 26px; margin-bottom: 15px; font-weight: 800; cursor: pointer; user-select: none; } /* Secret Tap Target */
- .btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; color: #fff!important; }
- .btn:hover { transform: scale(1.02); }
- .btn-earn { background: linear-gradient(90deg, #ff8a00, #ff3d00); }
- .btn-task { background: linear-gradient(90deg, #00c853, #00b0ff); }
- .btn-join { background: linear-gradient(90deg, #00e676, #00b0ff); color: #000!important; }
- .status { text-align: center; margin-top: 10px; font-weight: 600; }
- .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.topbar span { font-weight: 700; font-size: 16px; }
+.btn-shop { background: #000; color: #fff!important; border: none; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+  h1 { text-align: center; font-size: 26px; margin-bottom: 15px; font-weight: 800; cursor: pointer; user-select: none; }
+.btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; color: #fff!important; }
+.btn:hover { transform: scale(1.02); }
+.btn-earn { background: linear-gradient(90deg, #ff8a00, #ff3d00); }
+.btn-task { background: linear-gradient(90deg, #00c853, #00b0ff); }
+.btn-join { background: linear-gradient(90deg, #00e676, #00b0ff); color: #000!important; }
+.status { text-align: center; margin-top: 10px; font-weight: 600; }
+.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   video { width: 100%; border-radius: 15px; background: #000; aspect-ratio: 9/16; object-fit: cover; }
- .hidden { display: none!important; }
-  #adminPanel { display: none; } /* HIDDEN BY DEFAULT */
+.hidden { display: none!important; }
+  #adminPanel { display: none; }
   #adminPanel.active { display: block; }
- .req-item,.claim-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 10px; margin-bottom: 8px; }
- .btn-accept { background: #00c853; color: #fff!important; padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; }
- .btn-approve { background: #2962ff; color: #fff!important; padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; }
+.req-item,.claim-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 10px; margin-bottom: 8px; }
+.btn-accept { background: #00c853; color: #fff!important; padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; }
+.btn-approve { background: #2962ff; color: #fff!important; padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; }
 </style>
 </head>
 <body>
 <div class="container">
-
   <div class="topbar glass">
     <span id="userId">👑 Guest_....</span>
     <span>Coins: <b id="coinBalance">0</b></span>
     <button class="btn-shop" onclick="alert('Shop Coming Soon!')">Shop 🛒</button>
   </div>
-
   <div class="glass">
-    <h1 id="secretTitle">🔥 KhamChat VIP Party 🔥</h1> <!-- TAP ME 5X -->
+    <h1 id="secretTitle">🔥 KhamChat VIP Party 🔥</h1>
     <button class="btn btn-earn" onclick="window.open('https://monetag.com/your-link', '_blank')">🎁 Earn Free Coins</button>
     <button class="btn btn-task" onclick="requestCoins()">✅ I Completed Task +100</button>
     <button class="btn btn-join" id="joinBtn" onclick="requestJoin()">Request to Join Party</button>
@@ -67,20 +49,18 @@
       <video id="remoteVideo" autoplay playsinline></video>
     </div>
   </div>
-
   <div class="glass" id="adminPanel">
     <h2>👑 ADMIN PANEL [SECRET]</h2>
-    <h3>Join Requests</h3>
+    <h3>Join Requests <button onclick="loadAdminData()" style="float:right; background:#000; color:#fff; border:none; padding:4px 8px; border-radius:6px;">🔄 Refresh</button></h3>
     <div id="requestsList"><p>No requests yet.</p></div>
     <h3 style="margin-top:15px;">Coin Claims</h3>
     <div id="claimsList"><p>No claims yet.</p></div>
   </div>
-
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue, push, remove, update, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+  import { getDatabase, ref, set, onValue, remove, update, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
@@ -108,11 +88,11 @@
     tapCount++;
     if (tapCount === 5) {
       document.getElementById('adminPanel').classList.add('active');
-      loadAdminData();
+      loadAdminData(); // FORCE LOAD NOW
       alert('👑 Admin Mode Activated');
-      tapCount = 0; // Reset
+      tapCount = 0;
     }
-    setTimeout(() => { tapCount = 0; }, 2000); // Reset after 2 seconds if not fast enough
+    setTimeout(() => { tapCount = 0; }, 2000);
   });
 
   function loadAdminData() {
