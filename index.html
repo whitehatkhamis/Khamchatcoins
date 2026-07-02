@@ -2,32 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>KhamChatCoins - VIP Party</title>
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-  body { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%); background-attachment: fixed; min-height: 100vh; overflow-y: auto; padding: 20px; color: #1a1a1a; }
-.container { max-width: 500px; margin: 0 auto; }
-.glass { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); }
-  h1, h2, h3, p, span, div { color: #1a1a1a; text-shadow: none; }
-.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.topbar span { font-weight: 700; font-size: 16px; }
-.btn-shop { background: #000; color: #fff!important; border: none; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
-  h1 { text-align: center; font-size: 26px; margin-bottom: 15px; font-weight: 800; cursor: pointer; user-select: none; }
-.btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; color: #fff!important; }
-.btn:hover { transform: scale(1.02); }
-.btn-earn { background: linear-gradient(90deg, #ff8a00, #ff3d00); }
-.btn-task { background: linear-gradient(90deg, #00c853, #00b0ff); }
-.btn-join { background: linear-gradient(90deg, #00e676, #00b0ff); color: #000!important; }
-.status { text-align: center; margin-top: 10px; font-weight: 600; }
-.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%; /* IMPORTANT: Not 100vh */
+    overflow-y: auto; /* IMPORTANT: Force Scroll */
+    overflow-x: hidden;
+  }
+  body { 
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+    background-attachment: fixed;
+    padding: 20px;
+    color: #1a1a1a; /* BLACK TEXT */
+  }
+ .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; } /* Extra space for scroll */
+ .glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  }
+  h1, h2, h3, p, span, div, button { color: #1a1a1a; text-shadow: none; }
+ .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+ .topbar span { font-weight: 700; font-size: 16px; }
+ .btn-shop { background: #000; color: #fff!important; border: none; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+  h1 { text-align: center; font-size: 26px; margin-bottom: 15px; font-weight: 800; }
+ .btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; color: #fff!important; }
+ .btn:hover { transform: scale(1.02); }
+ .btn-earn { background: linear-gradient(90deg, #ff8a00, #ff3d00); }
+ .btn-task { background: linear-gradient(90deg, #00c853, #00b0ff); }
+ .btn-join { background: linear-gradient(90deg, #00e676, #00b0ff); color: #000!important; }
+ .status { text-align: center; margin-top: 10px; font-weight: 600; }
+ .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   video { width: 100%; border-radius: 15px; background: #000; aspect-ratio: 9/16; object-fit: cover; }
-.hidden { display: none!important; }
-  #adminPanel { display: none; }
-  #adminPanel.active { display: block; }
-.req-item,.claim-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 10px; margin-bottom: 8px; }
-.btn-accept { background: #00c853; color: #fff!important; padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; }
-.btn-approve { background: #2962ff; color: #fff!important; padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; }
+ .hidden { display: none!important; }
+  
+  /* === TEST BLOCK TO FORCE SCROLL === */
+ .spacer { height: 200px; background: rgba(0,0,0,0.05); border-radius: 10px; margin-top: 20px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -38,29 +57,25 @@
     <button class="btn-shop" onclick="alert('Shop Coming Soon!')">Shop 🛒</button>
   </div>
   <div class="glass">
-    <h1 id="secretTitle">🔥 KhamChat VIP Party 🔥</h1>
-    <button class="btn btn-earn" onclick="window.open('https://monetag.com/your-link', '_blank')">🎁 Earn Free Coins</button>
-    <button class="btn btn-task" onclick="requestCoins()">✅ I Completed Task +100</button>
-    <button class="btn btn-join" id="joinBtn" onclick="requestJoin()">Request to Join Party</button>
-    <button class="btn btn-join hidden" id="videoBtn" onclick="startVideo()">🎥 Join Video Party</button>
-    <p class="status" id="status">Status: Idle</p>
+    <h1>🔥 KhamChat VIP Party 🔥</h1>
+    <button class="btn btn-earn" onclick="window.open('https://omg10.com/4/11217324', '_blank')">🎁 Earn Free Coins</button>
+    <button class="btn btn-task" onclick="claim100()">✅ Claim +100 Coins</button>
+    <button class="btn btn-join" id="videoBtn" onclick="startVideo()">🎥 Join Video Party</button>
+    <p class="status" id="status">Status: Ready</p>
     <div class="video-grid hidden" id="videoArea">
       <video id="localVideo" autoplay muted playsinline></video>
       <video id="remoteVideo" autoplay playsinline></video>
     </div>
-  </div>
-  <div class="glass" id="adminPanel">
-    <h2>👑 ADMIN PANEL [SECRET]</h2>
-    <h3>Join Requests <button onclick="loadAdminData()" style="float:right; background:#000; color:#fff; border:none; padding:4px 8px; border-radius:6px;">🔄 Refresh</button></h3>
-    <div id="requestsList"><p>No requests yet.</p></div>
-    <h3 style="margin-top:15px;">Coin Claims</h3>
-    <div id="claimsList"><p>No claims yet.</p></div>
+
+    <!-- SCROLL TEST BLOCK - DELETE LATER -->
+    <div class="spacer">⬇️ SCROLL DOWN TO SEE ME ⬇️</div>
+    <div class="spacer">✅ SCROLL IS WORKING ✅</div>
   </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue, remove, update, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+  import { getDatabase, ref, set, onValue, get, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
@@ -82,74 +97,20 @@
     document.getElementById('coinBalance').innerText = snap.val() || 0;
   });
 
-  // === SECRET CODE LOGIC ===
-  let tapCount = 0;
-  document.getElementById('secretTitle').addEventListener('click', () => {
-    tapCount++;
-    if (tapCount === 5) {
-      document.getElementById('adminPanel').classList.add('active');
-      loadAdminData(); // FORCE LOAD NOW
-      alert('👑 Admin Mode Activated');
-      tapCount = 0;
-    }
-    setTimeout(() => { tapCount = 0; }, 2000);
-  });
-
-  function loadAdminData() {
-    onValue(ref(db, 'joinRequests'), snap => {
-      const list = document.getElementById('requestsList');
-      list.innerHTML = '';
-      if (!snap.exists()) { list.innerHTML = '<p>No requests yet.</p>'; return; }
-      snap.forEach(child => {
-        const id = child.key;
-        list.innerHTML += `<div class="req-item"><span>${id}</span><button class="btn-accept" onclick="acceptUser('${id}')">Accept</button></div>`;
-      });
-    });
-    onValue(ref(db, 'coinClaims'), snap => {
-      const list = document.getElementById('claimsList');
-      list.innerHTML = '';
-      if (!snap.exists()) { list.innerHTML = '<p>No claims yet.</p>'; return; }
-      snap.forEach(child => {
-        const id = child.key;
-        list.innerHTML += `<div class="claim-item"><span>${id}</span><button class="btn-approve" onclick="approveCoins('${id}')">+100</button></div>`;
-      });
-    });
-  }
-
-  window.requestJoin = () => {
-    set(ref(db, 'joinRequests/' + userId), true);
-    document.getElementById('status').innerText = 'Status: Waiting Admin Approval...';
-    onValue(ref(db, 'approvedUsers/' + userId), snap => {
-      if (snap.val() === true) {
-        document.getElementById('joinBtn').classList.add('hidden');
-        document.getElementById('videoBtn').classList.remove('hidden');
-        document.getElementById('status').innerText = 'Status: Approved. Click Join Video.';
-      }
-    });
-  };
-
-  window.requestCoins = () => {
-    set(ref(db, 'coinClaims/' + userId), true);
-    alert('Claim sent to Admin. Wait for approval.');
-  };
-
-  window.acceptUser = (id) => {
-    set(ref(db, 'approvedUsers/' + id), true);
-    remove(ref(db, 'joinRequests/' + id));
-  };
-  window.approveCoins = (id) => {
-    const coinRef = ref(db, 'users/' + id + '/coins');
+  window.claim100 = () => {
+    const coinRef = ref(db, 'users/' + userId + '/coins');
     get(coinRef).then(snap => {
       const current = snap.val() || 0;
-      update(ref(db, 'users/' + id), { coins: current + 100 });
+      update(ref(db, 'users/' + userId), { coins: current + 100 });
+      alert('+100 Coins Added!');
     });
-    remove(ref(db, 'coinClaims/' + id));
   };
 
   let pc;
   const servers = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
   window.startVideo = async () => {
     document.getElementById('videoArea').classList.remove('hidden');
+    document.getElementById('status').innerText = 'Status: In Party';
     const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
     document.getElementById('localVideo').srcObject = stream;
     pc = new RTCPeerConnection(servers);
