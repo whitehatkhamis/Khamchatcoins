@@ -2,34 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- KEY FIX: user-scalable=no = NO ZOOM. width=device-width = Fit Screen -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>KhamChatCoins - VIP Party</title>
 <style>
-  html {
-    overflow-y: scroll; /* Force Scrollbar Always */
-  }
+  html { overflow-y: scroll; }
   body { 
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
     background-attachment: fixed;
-    margin: 0;
-    padding: 20px;
-    color: #1a1a1a; /* BLACK TEXT */
-    min-height: 120vh; /* KEY FIX: Force Page Taller Than Screen = Scroll Must Work */
-    overflow-x: hidden;
-    touch-action: pan-y; /* Allow Vertical Scroll Only */
+    margin: 0; padding: 20px; color: #1a1a1a; 
+    min-height: 120vh; /* SCROLL FORCE */
+    overflow-x: hidden; touch-action: pan-y;
   }
 .container { max-width: 500px; margin: 0 auto; padding-bottom: 80px; }
-.glass {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  }
+.glass { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); }
   h1, h2, h3, p, span, div, button { color: #1a1a1a; text-shadow: none; }
 .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .topbar span { font-weight: 700; font-size: 16px; }
@@ -44,8 +30,6 @@
 .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   video { width: 100%; border-radius: 15px; background: #000; aspect-ratio: 9/16; object-fit: cover; }
 .hidden { display: none!important; }
-  
-  /* === SCROLL TEST BLOCK === */
 .spacer { height: 300px; background: rgba(0,0,0,0.05); border-radius: 10px; margin-top: 20px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; }
 </style>
 </head>
@@ -54,22 +38,19 @@
   <div class="topbar glass">
     <span id="userId">👑 Guest_....</span>
     <span>Coins: <b id="coinBalance">0</b></span>
-    <button class="btn-shop" onclick="alert('Shop Coming Soon!')">Shop 🛒</button>
+    <button class="btn-shop" onclick="window.open('https://your-shop.com', '_blank')">Shop 🛒</button>
   </div>
   <div class="glass">
     <h1>🔥 KhamChat VIP Party 🔥</h1>
     <button class="btn btn-earn" onclick="window.open('https://omg10.com/4/11217324', '_blank')">🎁 Earn Free Coins</button>
     <button class="btn btn-task" onclick="claim100()">✅ Claim +100 Coins</button>
-    <button class="btn btn-join" id="videoBtn" onclick="startVideo()">🎥 Join Video Party</button>
+    <button class="btn btn-join" id="videoBtn">🎥 Join Video Party</button> <!-- NO ONCLICK HERE -->
     <p class="status" id="status">Status: Ready</p>
     <div class="video-grid hidden" id="videoArea">
       <video id="localVideo" autoplay muted playsinline></video>
       <video id="remoteVideo" autoplay playsinline></video>
     </div>
-
-    <!-- SCROLL TEST - DELETE AFTER TESTING -->
-    <div class="spacer">⬇️ SCROLL DOWN NOW ⬇️</div>
-    <div class="spacer">✅ IF YOU SEE ME = SCROLL WORKS ✅</div>
+    <div class="spacer">⬇️ SCROLL TEST ⬇️</div>
   </div>
 </div>
 
@@ -92,7 +73,6 @@
   const userId = 'Guest_' + Math.floor(Math.random() * 9000 + 1000);
   document.getElementById('userId').innerText = `👑 ${userId}`;
   set(ref(db, 'users/' + userId), { coins: 0 });
-
   onValue(ref(db, 'users/' + userId + '/coins'), snap => {
     document.getElementById('coinBalance').innerText = snap.val() || 0;
   });
@@ -106,22 +86,19 @@
     });
   };
 
-  let pc;
-  const servers = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
-  window.startVideo = async () => {
-    // CLOSE ALL BUBBLES FIRST
+  // === KEY FIX: DIRECT CLICK LISTENER ===
+  document.getElementById('videoBtn').addEventListener('click', async () => {
     document.getElementById('videoArea').classList.remove('hidden');
-    document.getElementById('status').innerText = 'Status: In Party';
+    document.getElementById('status').innerText = 'Status: Requesting Camera...';
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true });
       document.getElementById('localVideo').srcObject = stream;
-      pc = new RTCPeerConnection(servers);
-      stream.getTracks().forEach(track => pc.addTrack(track, stream));
-      pc.ontrack = e => document.getElementById('remoteVideo').srcObject = e.streams[0];
+      document.getElementById('status').innerText = 'Status: In Party';
     } catch (err) {
-      alert('Close Messenger Chat Heads or other app bubbles, then Try again. Error: ' + err.message);
+      document.getElementById('status').innerText = 'Error: ' + err.name;
+      alert('Camera Blocked. Close all bubbles/apps. Error: ' + err.name);
     }
-  };
+  });
 </script>
 </body>
 </html>
