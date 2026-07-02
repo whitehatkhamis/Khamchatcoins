@@ -3,43 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>KhamChat Live Room</title>
+<title>KhamChat Global Room</title>
 <style>
-:root { --bg: #0A0A12; --card: #151521; --card-2: #1E1E2D; --purple: #8A2BE2; --pink: #FF2E88; --text: #FFFFFF; --text-2: #B4B4C8; --green: #00E676; }
+:root { --bg: #0A0A12; --card: #151521; --purple: #8A2BE2; --pink: #FF2E88; --text: #FFFFFF; --green: #00E676; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
 body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-.header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: rgba(10,10,18,0.8); backdrop-filter: blur(10px); z-index: 10; }
+.header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: rgba(10,10,18,0.8); backdrop-filter: blur(10px); }
 .header-left { display: flex; align-items: center; gap: 10px; }
 .header-left img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--purple); }
-.room-title { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 4px; }
-.room-title.tick { color: var(--purple); }
-.room-id { font-size: 12px; color: var(--text-2); }
-.follow-btn { background: linear-gradient(90deg, var(--purple), var(--pink)); border: none; color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 12px; }
-.header-right { display: flex; align-items: center; gap: 8px; }
-.viewers { font-size: 12px; font-weight: 700; }
+.follow-btn { background: linear-gradient(90deg, var(--purple), var(--pink)); border: none; color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 12px; cursor:pointer; }
 .main { flex: 1; display: grid; grid-template-columns: 1fr 280px; gap: 12px; padding: 12px; overflow: hidden; }
 @media (max-width: 900px) {.main { grid-template-columns: 1fr; }.sidebar { display: none; }
 .stage { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 10px; }
-.stage.host { grid-row: span 2; grid-column: span 1; }
-.video-card { background: var(--card); border-radius: 16px; position: relative; overflow: hidden; border: 1px solid #2A2A3D; display: flex; align-items: center; justify-content: center; }
-.video-card.host { border: 2px solid var(--purple); box-shadow: 0 0 20px rgba(138,43,226,0.4); }
+.video-card { background: var(--card); border-radius: 16px; position: relative; overflow: hidden; border: 1px solid #2A2A3D; display: flex; align-items: center; justify-content: center; min-height: 160px; }
+.video-card.host { border: 2px solid var(--purple); }
 .video-card video { width: 100%; height: 100%; object-fit: cover; background: #000; }
 .video-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7)); pointer-events: none; }
 .host-badge { position: absolute; top: 8px; left: 8px; background: var(--purple); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
 .slot-num { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); padding: 4px 6px; border-radius: 6px; font-size: 11px; font-weight: 700; }
 .user-info { position: absolute; bottom: 8px; left: 8px; }
-.user-name { font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 4px; }
-.user-likes { font-size: 11px; color: var(--text-2); display: flex; align-items: center; gap: 4px; }
-.join-btn { position: absolute; background: var(--pink); border: none; color: #fff; padding: 8px 16px; border-radius: 20px; font-weight: 700; cursor: pointer; }
+.user-name { font-weight: 700; font-size: 13px; }
+.join-btn { position: absolute; background: var(--pink); border: none; color: #fff; padding: 8px 16px; border-radius: 20px; font-weight: 700; cursor: pointer; z-index:2; }
 .sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
 .card { background: var(--card); border-radius: 16px; padding: 12px; border: 1px solid #2A2A3D; }
-.card-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
-.gift-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.gift-item { background: var(--card-2); border-radius: 12px; padding: 8px; text-align: center; font-size: 24px; cursor: pointer; }
-.gift-price { font-size: 10px; color: var(--green); margin-top: 4px; }
-.send-gift-btn { width: 100%; background: var(--pink); border: none; color: #fff; padding: 10px; border-radius: 12px; font-weight: 700; margin-top: 8px; }
-.bottom-area { padding: 0 12px 12px; }
-.announcement { background: rgba(138,43,226,0.1); border: 1px solid rgba(138,43,226,0.3); border-radius: 12px; padding: 10px; display: flex; gap: 10px; margin-bottom: 10px; }
 .chat-box { background: var(--card); border-radius: 16px; padding: 10px; height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
 .input-bar { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .input-bar input { flex: 1; background: var(--card); border: 1px solid #2A2A3D; border-radius: 20px; padding: 10px 14px; color: var(--text); outline: none; }
@@ -53,67 +39,43 @@ body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidde
   <div class="header-left">
     <img id="hostImg" src="https://i.pravatar.cc/100" alt="Host">
     <div>
-      <div class="room-title">KhamChat Live Room <span class="tick">✔</span></div>
-      <div class="room-id" id="roomId">ID:...</div>
+      <div><b>KhamChat Global Room</b> ✔</div>
+      <div id="roomId" style="font-size:12px; color:#B4B4C8;">ID:...</div>
     </div>
   </div>
   <button class="follow-btn" id="joinRoomBtn">🎥 Join Live</button>
-  <div class="header-right">
-    <div class="viewers"><span id="viewerCount">0</span></div>
-  </div>
 </header>
 
 <main class="main">
   <div class="stage" id="stage">
-    <!-- Slot 1 = Host -->
-    <div class="video-card host" data-slot="1">
-      <video id="video-1" autoplay playsinline muted></video>
-      <div class="video-overlay"></div>
-      <div class="host-badge">Host</div>
-      <div class="user-info"><div class="user-name" id="name-1">Host</div><div class="user-likes">❤️ <span id="likes-1">0</span></div></div>
-    </div>
-    <!-- Slot 2 to 6 = Guests -->
-    <div class="video-card" data-slot="2"><video id="video-2" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">2</div><button class="join-btn" onclick="requestSlot(2)">Join</button><div class="user-info"><div class="user-name" id="name-2">Empty</div><div class="user-likes">❤️ <span id="likes-2">0</span></div></div></div>
-    <div class="video-card" data-slot="3"><video id="video-3" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">3</div><button class="join-btn" onclick="requestSlot(3)">Join</button><div class="user-info"><div class="user-name" id="name-3">Empty</div><div class="user-likes">❤️ <span id="likes-3">0</span></div></div></div>
-    <div class="video-card" data-slot="4"><video id="video-4" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">4</div><button class="join-btn" onclick="requestSlot(4)">Join</button><div class="user-info"><div class="user-name" id="name-4">Empty</div><div class="user-likes">❤️ <span id="likes-4">0</span></div></div></div>
-    <div class="video-card" data-slot="5"><video id="video-5" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">5</div><button class="join-btn" onclick="requestSlot(5)">Join</button><div class="user-info"><div class="user-name" id="name-5">Empty</div><div class="user-likes">❤️ <span id="likes-5">0</span></div></div></div>
-    <div class="video-card" data-slot="6"><video id="video-6" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">6</div><button class="join-btn" onclick="requestSlot(6)">Join</button><div class="user-info"><div class="user-name" id="name-6">Empty</div><div class="user-likes">❤️ <span id="likes-6">0</span></div></div></div>
+    <div class="video-card host" data-slot="1"><video id="video-1" autoplay playsinline muted></video><div class="video-overlay"></div><div class="host-badge">Host</div><div class="user-info"><div class="user-name" id="name-1">Host</div></div></div>
+    <div class="video-card" data-slot="2"><video id="video-2" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">2</div><button class="join-btn" onclick="joinSlot(2)">Join</button><div class="user-info"><div class="user-name" id="name-2">Empty</div></div></div>
+    <div class="video-card" data-slot="3"><video id="video-3" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">3</div><button class="join-btn" onclick="joinSlot(3)">Join</button><div class="user-info"><div class="user-name" id="name-3">Empty</div></div></div>
+    <div class="video-card" data-slot="4"><video id="video-4" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">4</div><button class="join-btn" onclick="joinSlot(4)">Join</button><div class="user-info"><div class="user-name" id="name-4">Empty</div></div></div>
+    <div class="video-card" data-slot="5"><video id="video-5" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">5</div><button class="join-btn" onclick="joinSlot(5)">Join</button><div class="user-info"><div class="user-name" id="name-5">Empty</div></div></div>
+    <div class="video-card" data-slot="6"><video id="video-6" autoplay playsinline></video><div class="video-overlay"></div><div class="slot-num">6</div><button class="join-btn" onclick="joinSlot(6)">Join</button><div class="user-info"><div class="user-name" id="name-6">Empty</div></div></div>
   </div>
 
   <aside class="sidebar">
-    <div class="card">
-      <div class="card-title">Popular Gifts</div>
-      <div class="gift-grid">
-        <div class="gift-item" onclick="sendGift(10)">🌹<div class="gift-price">10</div></div>
-        <div class="gift-item" onclick="sendGift(100)">💖<div class="gift-price">100</div></div>
-        <div class="gift-item" onclick="sendGift(500)">💎<div class="gift-price">500</div></div>
-        <div class="gift-item" onclick="sendGift(1000)">🚀<div class="gift-price">1K</div></div>
-        <div class="gift-item" onclick="sendGift(5000)">🏰<div class="gift-price">5K</div></div>
-        <div class="gift-item" onclick="sendGift(10000)">⭐<div class="gift-price">10K</div></div>
-      </div>
-      <button class="send-gift-btn">🎁 Send a Gift</button>
-    </div>
+    <div class="card"><b>Popular Gifts</b><div style="margin-top:8px;">🌹 10 💖 100 💎 500</div></div>
   </aside>
 </main>
 
-<div class="bottom-area">
-  <div class="announcement"><div>📢</div><div><b>Room Announcement</b><div id="announceText">Welcome to KhamChat Live Room!</div></div></div>
+<div style="padding:0 12px 12px;">
   <div class="chat-box" id="chatBox"></div>
   <div class="input-bar">
     <input type="text" id="chatInput" placeholder="Say something...">
-    <button class="gift-btn" onclick="sendChat()">🎁</button>
+    <button class="gift-btn" onclick="sendChat()">➤</button>
   </div>
 </div>
 
-<!-- MONETAG AD ZONE - ID: 11217324 -->
-<div class="monetag-ad">
-<script src='https://omg10.com/4/11217324' data-zone='11217324' async data-cfasync='false'></script>
-</div>
+<!-- MONETAG AD ZONE -->
+<div class="monetag-ad"><script src='https://omg10.com/4/11217324' data-zone='11217324' async></script></div>
 
 <script type="module">
-// 1. FIREBASE CONFIG NAKA - REAL
+// 1. FIREBASE CONFIG NAKA
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set, onValue, push, update, remove, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, set, onValue, push, update, remove, onDisconnect, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAkN35nsJgxKvtVKTH2Y-IIg_jfr2fvDbI",
@@ -125,71 +87,102 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const roomId = window.location.hash.substring(1) || 'khamchat-main';
+const roomId = window.location.hash.substring(1) || 'global';
 document.getElementById('roomId').innerText = 'ID: ' + roomId;
+const myId = Math.random().toString(36).substr(2, 9);
 
-// 2. WEBRTC LOGIC - REAL 6 SLOTS
 const pcConfig = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
-const peers = {};
+const peers = {}; // {slot: RTCPeerConnection}
 let mySlot = 0;
 let myStream = null;
 
-async function startCamera(slot) {
+// 2. WEBRTC CORE - GLOBAL CONNECT
+async function joinSlot(slot) {
+  const taken = await get(ref(db, `rooms/${roomId}/slots/${slot}/active`));
+  if(taken.exists() && taken.val()) { alert('Slot taken'); return; }
+  
+  mySlot = slot;
   myStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
   document.getElementById('video-' + slot).srcObject = myStream;
-  document.getElementById('video-' + slot).muted = true; // host mute self
-  set(ref(db, 'rooms/' + roomId + '/slots/' + slot + '/user'), { name: 'User' + slot, active: true });
+  document.getElementById('video-' + slot).muted = true;
+  
+  await set(ref(db, `rooms/${roomId}/slots/${slot}`), { active: true, id: myId, name: 'User' + slot });
+  onDisconnect(ref(db, `rooms/${roomId}/slots/${slot}`)).remove();
+  document.querySelector(`[data-slot="${slot}"].join-btn`).style.display = 'none';
+
+  // Connect to all other active slots
+  const allSlots = await get(ref(db, `rooms/${roomId}/slots`));
+  allSlots.forEach(snap => {
+    const s = parseInt(snap.key);
+    if(s!== slot && snap.val().active) { createPeerConnection(s, true); }
+  });
 }
 
-window.requestSlot = async (slot) => {
-  const snap = await get(child(ref(db), 'rooms/' + roomId + '/slots/' + slot));
-  if(snap.exists() && snap.val().user?.active) { alert('Slot is taken'); return; }
-  mySlot = slot;
-  await startCamera(slot);
-  document.querySelector('[data-slot="'+slot+'"].join-btn').style.display = 'none';
-}
+function createPeerConnection(remoteSlot, isCaller) {
+  const pc = new RTCPeerConnection(pcConfig);
+  peers[remoteSlot] = pc;
+  myStream.getTracks().forEach(track => pc.addTrack(track, myStream));
+  
+  pc.ontrack = e => {
+    document.getElementById('video-' + remoteSlot).srcObject = e.streams[0];
+  };
+  
+  pc.onicecandidate = e => {
+    if(e.candidate) set(ref(db, `rooms/${roomId}/signals/${remoteSlot}/${mySlot}`), { candidate: e.candidate });
+  };
 
-// 3. FIREBASE REALTIME LISTENERS
-onValue(ref(db, 'rooms/' + roomId + '/slots'), (snapshot) => {
-  const slots = snapshot.val() || {};
-  for(let i=1; i<=6; i++){
-    const nameEl = document.getElementById('name-' + i);
-    if(slots[i]?.user?.active){ 
-      nameEl.innerText = slots[i].user.name; 
-      document.querySelector('[data-slot="'+i+'"].join-btn').style.display = 'none';
-    } else { 
-      nameEl.innerText = 'Empty'; 
-      document.querySelector('[data-slot="'+i+'"].join-btn').style.display = 'block';
-    }
+  if(isCaller) {
+    pc.createOffer().then(o => pc.setLocalDescription(o)).then(() => {
+      set(ref(db, `rooms/${roomId}/signals/${remoteSlot}/${mySlot}`), { offer: pc.localDescription });
+    });
   }
+
+  // Listen for signals
+  onValue(ref(db, `rooms/${roomId}/signals/${mySlot}/${remoteSlot}`), async snap => {
+    const data = snap.val(); if(!data) return;
+    if(data.offer) {
+      await pc.setRemoteDescription(data.offer);
+      const ans = await pc.createAnswer();
+      await pc.setLocalDescription(ans);
+      set(ref(db, `rooms/${roomId}/signals/${remoteSlot}/${mySlot}`), { answer: ans });
+    }
+    if(data.answer) { pc.setRemoteDescription(data.answer); }
+    if(data.candidate) { pc.addIceCandidate(data.candidate); }
+  });
+}
+
+// 3. LISTEN FOR NEW USERS TO CONNECT TO ME
+onValue(ref(db, `rooms/${roomId}/slots`), snap => {
+  snap.forEach(s => {
+    const sNum = parseInt(s.key);
+    if(s.val().active && sNum!== mySlot &&!peers[sNum]) {
+      document.getElementById('name-' + sNum).innerText = s.val().name;
+      document.querySelector(`[data-slot="${sNum}"].join-btn`).style.display = 'none';
+      createPeerConnection(sNum, false); // I am callee
+    }
+    if(!s.val().active && peers[sNum]) {
+      peers[sNum].close(); delete peers[sNum];
+      document.getElementById('video-' + sNum).srcObject = null;
+      document.getElementById('name-' + sNum).innerText = 'Empty';
+      document.querySelector(`[data-slot="${sNum}"].join-btn`).style.display = 'block';
+    }
+  });
 });
 
-onValue(ref(db, 'rooms/' + roomId + '/chat'), (snapshot) => {
-  const chatBox = document.getElementById('chatBox');
-  chatBox.innerHTML = '';
-  snapshot.forEach(msg => {
-    chatBox.innerHTML += `<div><b>${msg.val().name}:</b> ${msg.val().text}</div>`;
-  });
+// 4. CHAT
+onValue(ref(db, `rooms/${roomId}/chat`), snap => {
+  const chatBox = document.getElementById('chatBox'); chatBox.innerHTML = '';
+  snap.forEach(m => chatBox.innerHTML += `<div><b>${m.val().name}:</b> ${m.val().text}</div>`);
   chatBox.scrollTop = chatBox.scrollHeight;
 });
-
 window.sendChat = () => {
-  const text = document.getElementById('chatInput').value;
-  if(!text) return;
-  push(ref(db, 'rooms/' + roomId + '/chat'), { name: 'User' + mySlot, text });
+  const t = document.getElementById('chatInput').value; if(!t) return;
+  push(ref(db, `rooms/${roomId}/chat`), { name: 'User' + mySlot, text: t });
   document.getElementById('chatInput').value = '';
 }
 
-window.sendGift = (coins) => {
-  push(ref(db, 'rooms/' + roomId + '/chat'), { name: 'System', text: `Sent a Gift ${coins} coins 🚀` });
-  const likeEl = document.getElementById('likes-1');
-  likeEl.innerText = parseInt(likeEl.innerText) + coins;
-}
-
-// 4. AUTO JOIN HOST SLOT 1 IF NO HASH
-if(!window.location.hash){ 
-  document.getElementById('joinRoomBtn').onclick = () => { mySlot=1; startCamera(1); document.getElementById('joinRoomBtn').style.display='none'; }
-}
+window.joinSlot = joinSlot;
+document.getElementById('joinRoomBtn').onclick = () => joinSlot(1); // Host
 </script>
 </body>
 </html>
