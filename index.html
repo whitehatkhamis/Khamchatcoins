@@ -2,26 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<!-- KEY FIX: user-scalable=no = NO ZOOM. width=device-width = Fit Screen -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>KhamChatCoins - VIP Party</title>
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%; /* IMPORTANT: Not 100vh */
-    overflow-y: auto; /* IMPORTANT: Force Scroll */
-    overflow-x: hidden;
+  html {
+    overflow-y: scroll; /* Force Scrollbar Always */
   }
   body { 
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
     background-attachment: fixed;
+    margin: 0;
     padding: 20px;
     color: #1a1a1a; /* BLACK TEXT */
+    min-height: 120vh; /* KEY FIX: Force Page Taller Than Screen = Scroll Must Work */
+    overflow-x: hidden;
+    touch-action: pan-y; /* Allow Vertical Scroll Only */
   }
- .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; } /* Extra space for scroll */
- .glass {
+.container { max-width: 500px; margin: 0 auto; padding-bottom: 80px; }
+.glass {
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -31,22 +31,22 @@
     box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
   }
   h1, h2, h3, p, span, div, button { color: #1a1a1a; text-shadow: none; }
- .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
- .topbar span { font-weight: 700; font-size: 16px; }
- .btn-shop { background: #000; color: #fff!important; border: none; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.topbar span { font-weight: 700; font-size: 16px; }
+.btn-shop { background: #000; color: #fff!important; border: none; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
   h1 { text-align: center; font-size: 26px; margin-bottom: 15px; font-weight: 800; }
- .btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; color: #fff!important; }
- .btn:hover { transform: scale(1.02); }
- .btn-earn { background: linear-gradient(90deg, #ff8a00, #ff3d00); }
- .btn-task { background: linear-gradient(90deg, #00c853, #00b0ff); }
- .btn-join { background: linear-gradient(90deg, #00e676, #00b0ff); color: #000!important; }
- .status { text-align: center; margin-top: 10px; font-weight: 600; }
- .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+.btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; color: #fff!important; }
+.btn:hover { transform: scale(1.02); }
+.btn-earn { background: linear-gradient(90deg, #ff8a00, #ff3d00); }
+.btn-task { background: linear-gradient(90deg, #00c853, #00b0ff); }
+.btn-join { background: linear-gradient(90deg, #00e676, #00b0ff); color: #000!important; }
+.status { text-align: center; margin-top: 10px; font-weight: 600; }
+.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   video { width: 100%; border-radius: 15px; background: #000; aspect-ratio: 9/16; object-fit: cover; }
- .hidden { display: none!important; }
+.hidden { display: none!important; }
   
-  /* === TEST BLOCK TO FORCE SCROLL === */
- .spacer { height: 200px; background: rgba(0,0,0,0.05); border-radius: 10px; margin-top: 20px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  /* === SCROLL TEST BLOCK === */
+.spacer { height: 300px; background: rgba(0,0,0,0.05); border-radius: 10px; margin-top: 20px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; }
 </style>
 </head>
 <body>
@@ -67,9 +67,9 @@
       <video id="remoteVideo" autoplay playsinline></video>
     </div>
 
-    <!-- SCROLL TEST BLOCK - DELETE LATER -->
-    <div class="spacer">⬇️ SCROLL DOWN TO SEE ME ⬇️</div>
-    <div class="spacer">✅ SCROLL IS WORKING ✅</div>
+    <!-- SCROLL TEST - DELETE AFTER TESTING -->
+    <div class="spacer">⬇️ SCROLL DOWN NOW ⬇️</div>
+    <div class="spacer">✅ IF YOU SEE ME = SCROLL WORKS ✅</div>
   </div>
 </div>
 
@@ -109,13 +109,18 @@
   let pc;
   const servers = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
   window.startVideo = async () => {
+    // CLOSE ALL BUBBLES FIRST
     document.getElementById('videoArea').classList.remove('hidden');
     document.getElementById('status').innerText = 'Status: In Party';
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    document.getElementById('localVideo').srcObject = stream;
-    pc = new RTCPeerConnection(servers);
-    stream.getTracks().forEach(track => pc.addTrack(track, stream));
-    pc.ontrack = e => document.getElementById('remoteVideo').srcObject = e.streams[0];
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      document.getElementById('localVideo').srcObject = stream;
+      pc = new RTCPeerConnection(servers);
+      stream.getTracks().forEach(track => pc.addTrack(track, stream));
+      pc.ontrack = e => document.getElementById('remoteVideo').srcObject = e.streams[0];
+    } catch (err) {
+      alert('Close Messenger Chat Heads or other app bubbles, then Try again. Error: ' + err.message);
+    }
   };
 </script>
 </body>
