@@ -1,205 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>KhamChat VIP Party</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Segoe UI', sans-serif; color: #fff; overflow: hidden; }
-    
-    /* BACKGROUND VIDEO FLOWERS - TECHNOLOGICAL VIBE */
-    #bgVideo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: blur(2px) brightness(0.4); }
-    #bgOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(88,0,255,0.3), rgba(255,0,128,0.3)); z-index: -1; }
-
-    /* GLASSMORPHISM UI */
-    #topBar { background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.2); padding:12px 20px; display:flex; justify-content:space-between; align-items:center; }
-   .glassBox { background: rgba(255,255,255,0.08); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 20px; margin: 15px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37); }
-    
-    button { background: linear-gradient(90deg, #00ff88, #00aaff); color: #000; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 12px; margin: 8px; width: 100%; cursor: pointer; transition: 0.3s; }
-    button:hover { transform: scale(1.02); box-shadow: 0 0 20px #00ff88; }
-    button.red { background: linear-gradient(90deg, #ff0088, #ff5500); color: #fff; }
-    button.yellow { background: linear-gradient(90deg, #ffaa00, #ff5500); }
-    
-    /* VIDEO GRID - PARTY VIEW */
-    #videoGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 15px; }
-   .videoPlayer { width: 100%; height: 200px; background: #000; border-radius: 15px; border: 2px solid rgba(0,255,136,0.5); }
-    
-    #adminPanel { display: none; }
-    #shopModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000e; z-index: 99; backdrop-filter: blur(10px); }
-   .modalBox { background: rgba(34,34,34,0.9); backdrop-filter: blur(20px); margin:10% auto; padding:20px; width:90%; max-width:400px; border-radius:20px; border: 1px solid #fff3; }
-  </style>
-  <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhamChatCoins - VIP Party</title>
+<style>
+  /* === SAME STYLE AS BEFORE === */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+  body {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-y: auto; 
+    padding: 20px;
+    color: #1a1a1a; /* BLACK TEXT */
+  }
+ .container { max-width: 500px; margin: 0 auto; }
+ .glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  }
+  h1, h2, h3, p, span, div { color: #1a1a1a; text-shadow: none; }
+ .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+ .topbar span { font-weight: 700; font-size: 16px; }
+ .btn-shop { background: #000; color: #fff!important; border: none; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+  h1 { text-align: center; font-size: 26px; margin-bottom: 15px; font-weight: 800; cursor: pointer; user-select: none; } /* Secret Tap Target */
+ .btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; color: #fff!important; }
+ .btn:hover { transform: scale(1.02); }
+ .btn-earn { background: linear-gradient(90deg, #ff8a00, #ff3d00); }
+ .btn-task { background: linear-gradient(90deg, #00c853, #00b0ff); }
+ .btn-join { background: linear-gradient(90deg, #00e676, #00b0ff); color: #000!important; }
+ .status { text-align: center; margin-top: 10px; font-weight: 600; }
+ .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+  video { width: 100%; border-radius: 15px; background: #000; aspect-ratio: 9/16; object-fit: cover; }
+ .hidden { display: none!important; }
+  #adminPanel { display: none; } /* HIDDEN BY DEFAULT */
+  #adminPanel.active { display: block; }
+ .req-item,.claim-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 10px; margin-bottom: 8px; }
+ .btn-accept { background: #00c853; color: #fff!important; padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; }
+ .btn-approve { background: #2962ff; color: #fff!important; padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; }
+</style>
 </head>
 <body>
+<div class="container">
 
-  <!-- BACKGROUND -->
-  <video id="bgVideo" autoplay loop muted playsinline>
-    <source src="https://videos.pexels.com/video-files/854384/854384-hd_1920_1080_30fps.mp4" type="video/mp4">
-  </video>
-  <div id="bgOverlay"></div>
-
-  <!-- TOP BAR -->
-  <div id="topBar">
-    <div>👑 <span id="userId">Guest</span></div>
-    <div>Coins: <span id="coinBalance">0</span> <button onclick="openShop()" style="width:auto; padding:8px 12px;">Shop 🛒</button></div>
+  <div class="topbar glass">
+    <span id="userId">👑 Guest_....</span>
+    <span>Coins: <b id="coinBalance">0</b></span>
+    <button class="btn-shop" onclick="alert('Shop Coming Soon!')">Shop 🛒</button>
   </div>
 
-  <div class="glassBox">
-    <h1 style="margin:0; text-shadow:0 0 10px #00ff88;">🔥 KhamChat VIP Party 🔥</h1>
-    
-    <!-- EARN TAB -->
-    <button class="yellow" onclick="window.open('https://omg10.com/4/11217324', '_blank')">🎁 Earn Free Coins</button>
-    <button onclick="claimCoins()">✅ I Completed Task +100</button>
-
-    <!-- VOICE/VIDEO TAB -->
-    <button id="requestBtn">Request to Join Party</button>
-    <button id="voiceBtn" class="red" style="display:none;">🎥 Join Video Party</button>
-    <div id="status" style="margin-top:10px;">Status: Idle</div>
-
-    <!-- VIDEO GRID -->
-    <div id="videoGrid"></div>
-  </div>
-
-  <!-- ADMIN PANEL -->
-  <div id="adminPanel" class="glassBox">
-    <h2>👑 ADMIN PANEL</h2>
-    <div id="requestsList"></div>
-    <h3>Pending Coin Claims</h3>
-    <div id="claimsList"></div>
-  </div>
-
-  <!-- SHOP MODAL -->
-  <div id="shopModal">
-    <div class="modalBox">
-      <h2>🛒 VIP Shop</h2>
-      <button onclick="buyItem(500, 'VIP Badge')">VIP Badge = 500 Coins</button>
-      <button onclick="buyItem(1000, 'Pin Room 1H')">Pin Room 1 Hour = 1000 Coins</button>
-      <button class="red" onclick="closeShop()">Close</button>
+  <div class="glass">
+    <h1 id="secretTitle">🔥 KhamChat VIP Party 🔥</h1> <!-- TAP ME 5X -->
+    <button class="btn btn-earn" onclick="window.open('https://monetag.com/your-link', '_blank')">🎁 Earn Free Coins</button>
+    <button class="btn btn-task" onclick="requestCoins()">✅ I Completed Task +100</button>
+    <button class="btn btn-join" id="joinBtn" onclick="requestJoin()">Request to Join Party</button>
+    <button class="btn btn-join hidden" id="videoBtn" onclick="startVideo()">🎥 Join Video Party</button>
+    <p class="status" id="status">Status: Idle</p>
+    <div class="video-grid hidden" id="videoArea">
+      <video id="localVideo" autoplay muted playsinline></video>
+      <video id="remoteVideo" autoplay playsinline></video>
     </div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <div class="glass" id="adminPanel">
+    <h2>👑 ADMIN PANEL [SECRET]</h2>
+    <h3>Join Requests</h3>
+    <div id="requestsList"><p>No requests yet.</p></div>
+    <h3 style="margin-top:15px;">Coin Claims</h3>
+    <div id="claimsList"><p>No claims yet.</p></div>
+  </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAkN35nsJgxKvtVKTH2Y-IIg_jfr2fvDbI",
-      authDomain: "khamchat-vip.firebaseapp.com",
-      projectId: "khamchat-vip",
-      storageBucket: "khamchat-vip.firebasestorage.app",
-      messagingSenderId: "1085659754446",
-      appId: "1:1085659754446:web:2d61fd965ef97044aec59f"
-    };
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const userId = 'Guest_' + Math.floor(Math.random() * 10000);
-    const AGORA_APP_ID = 'd0da6b303ceb4feea2b9652db445f309';
-    const CHANNEL_NAME = 'khamchat_vip_room';
-    
-    document.getElementById('userId').innerText = userId;
-    let client, localTracks;
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue, push, remove, update, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-    // LOAD COINS
-    const userRef = doc(db, "users", userId);
-    onSnapshot(userRef, (snap) => {
-      document.getElementById('coinBalance').innerText = snap.exists()? snap.data().coins || 0 : 0;
-      if(!snap.exists()) setDoc(userRef, { coins: 0 });
-    });
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_ID",
+    appId: "YOUR_APP_ID"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-    // EARN COINS
-    window.claimCoins = async () => {
-      await addDoc(collection(db, "claims"), { userId: userId, time: Date.now(), status: 'pending' });
-      alert('Claim Sent to Admin. Wait for Approval +100 Coins');
-    };
+  const userId = 'Guest_' + Math.floor(Math.random() * 9000 + 1000);
+  document.getElementById('userId').innerText = `👑 ${userId}`;
+  set(ref(db, 'users/' + userId), { coins: 0 });
 
-    // REQUEST JOIN
-    document.getElementById('requestBtn').onclick = async () => {
-      await addDoc(collection(db, "requests"), { userId: userId, time: Date.now() });
-      document.getElementById('status').innerText = 'Status: Request Sent... Waiting Admin';
-    };
+  onValue(ref(db, 'users/' + userId + '/coins'), snap => {
+    document.getElementById('coinBalance').innerText = snap.val() || 0;
+  });
 
-    // ADMIN MODE
-    if (window.location.hash === '#admin') {
-      document.getElementById('adminPanel').style.display = 'block';
-      onSnapshot(collection(db, "requests"), (snap) => {
-        document.getElementById('requestsList').innerHTML = '';
-        snap.forEach(d => {
-          document.getElementById('requestsList').innerHTML += 
-          `<div style="display:flex; justify-content:space-between; margin:5px 0;">${d.data().userId} 
-           <button style="width:auto;" onclick="acceptVoice('${d.id}', '${d.data().userId}')">Accept</button></div>`;
-        });
-      });
-      onSnapshot(collection(db, "claims"), (snap) => {
-        document.getElementById('claimsList').innerHTML = '';
-        snap.forEach(d => {
-          if(d.data().status === 'pending'){
-            document.getElementById('claimsList').innerHTML += 
-            `<div style="display:flex; justify-content:space-between; margin:5px 0;">${d.data().userId} 
-             <button style="width:auto;" onclick="approveClaim('${d.id}', '${d.data().userId}')">+100</button></div>`;
-          }
-        });
-      });
+  // === SECRET CODE LOGIC ===
+  let tapCount = 0;
+  document.getElementById('secretTitle').addEventListener('click', () => {
+    tapCount++;
+    if (tapCount === 5) {
+      document.getElementById('adminPanel').classList.add('active');
+      loadAdminData();
+      alert('👑 Admin Mode Activated');
+      tapCount = 0; // Reset
     }
-    
-    // LISTEN FOR ACCEPT
-    onSnapshot(doc(db, "accepted", userId), (snap) => {
-      if(snap.exists()){
-        document.getElementById('voiceBtn').style.display = 'block';
-        document.getElementById('status').innerText = 'Status: Accepted! Join Party';
+    setTimeout(() => { tapCount = 0; }, 2000); // Reset after 2 seconds if not fast enough
+  });
+
+  function loadAdminData() {
+    onValue(ref(db, 'joinRequests'), snap => {
+      const list = document.getElementById('requestsList');
+      list.innerHTML = '';
+      if (!snap.exists()) { list.innerHTML = '<p>No requests yet.</p>'; return; }
+      snap.forEach(child => {
+        const id = child.key;
+        list.innerHTML += `<div class="req-item"><span>${id}</span><button class="btn-accept" onclick="acceptUser('${id}')">Accept</button></div>`;
+      });
+    });
+    onValue(ref(db, 'coinClaims'), snap => {
+      const list = document.getElementById('claimsList');
+      list.innerHTML = '';
+      if (!snap.exists()) { list.innerHTML = '<p>No claims yet.</p>'; return; }
+      snap.forEach(child => {
+        const id = child.key;
+        list.innerHTML += `<div class="claim-item"><span>${id}</span><button class="btn-approve" onclick="approveCoins('${id}')">+100</button></div>`;
+      });
+    });
+  }
+
+  window.requestJoin = () => {
+    set(ref(db, 'joinRequests/' + userId), true);
+    document.getElementById('status').innerText = 'Status: Waiting Admin Approval...';
+    onValue(ref(db, 'approvedUsers/' + userId), snap => {
+      if (snap.val() === true) {
+        document.getElementById('joinBtn').classList.add('hidden');
+        document.getElementById('videoBtn').classList.remove('hidden');
+        document.getElementById('status').innerText = 'Status: Approved. Click Join Video.';
       }
     });
+  };
 
-    window.acceptVoice = async (id, uid) => {
-      await setDoc(doc(db, "accepted", uid), { ok: true });
-      await deleteDoc(doc(db, "requests", id));
-    };
-    window.approveClaim = async (id, uid) => {
-      await updateDoc(doc(db, "users", uid), { coins: increment(100) });
-      await deleteDoc(doc(db, "claims", id));
-    };
+  window.requestCoins = () => {
+    set(ref(db, 'coinClaims/' + userId), true);
+    alert('Claim sent to Admin. Wait for approval.');
+  };
 
-    // VIDEO PARTY CODE = THE FIX
-    document.getElementById('voiceBtn').onclick = async () => {
-      document.getElementById('status').innerText = 'Joining Party...';
-      client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
-      await client.join(AGORA_APP_ID, CHANNEL_NAME, null, userId);
-      
-      // CREATE AUDIO + VIDEO TRACKS
-      localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
-      const localPlayer = document.createElement('div');
-      localPlayer.id = 'local-' + userId;
-      localPlayer.className = 'videoPlayer';
-      document.getElementById('videoGrid').appendChild(localPlayer);
-      localTracks[1].play(localPlayer.id); // Video Track
-      await client.publish(localTracks);
+  window.acceptUser = (id) => {
+    set(ref(db, 'approvedUsers/' + id), true);
+    remove(ref(db, 'joinRequests/' + id));
+  };
+  window.approveCoins = (id) => {
+    const coinRef = ref(db, 'users/' + id + '/coins');
+    get(coinRef).then(snap => {
+      const current = snap.val() || 0;
+      update(ref(db, 'users/' + id), { coins: current + 100 });
+    });
+    remove(ref(db, 'coinClaims/' + id));
+  };
 
-      // SUBSCRIBE TO OTHERS
-      client.on('user-published', async (user, mediaType) => {
-        await client.subscribe(user, mediaType);
-        if (mediaType === 'video') {
-          const remotePlayer = document.createElement('div');
-          remotePlayer.id = 'remote-' + user.uid;
-          remotePlayer.className = 'videoPlayer';
-          document.getElementById('videoGrid').appendChild(remotePlayer);
-          user.videoTrack.play(remotePlayer.id);
-        }
-        if (mediaType === 'audio') user.audioTrack.play();
-      });
-      document.getElementById('status').innerText = 'Status: LIVE IN PARTY 🔴';
-    };
-
-    // SHOP
-    window.openShop = () => document.getElementById('shopModal').style.display = 'block';
-    window.closeShop = () => document.getElementById('shopModal').style.display = 'none';
-    window.buyItem = async (price, item) => {
-      const snap = await getDoc(userRef);
-      if((snap.data().coins || 0) >= price){
-        await updateDoc(userRef, { coins: increment(-price) });
-        alert('Bought: ' + item);
-      } else alert('Not Enough Coins. Earn More!');
-      closeShop();
-    };
-  </script>
+  let pc;
+  const servers = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+  window.startVideo = async () => {
+    document.getElementById('videoArea').classList.remove('hidden');
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    document.getElementById('localVideo').srcObject = stream;
+    pc = new RTCPeerConnection(servers);
+    stream.getTracks().forEach(track => pc.addTrack(track, stream));
+    pc.ontrack = e => document.getElementById('remoteVideo').srcObject = e.streams[0];
+  };
+</script>
 </body>
 </html>
