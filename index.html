@@ -2,103 +2,232 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>KhamChatCoins - VIP Party</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>KhamChat Live Room</title>
 <style>
-  html { overflow-y: scroll; }
-  body { 
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-    background-attachment: fixed;
-    margin: 0; padding: 20px; color: #1a1a1a; 
-    min-height: 120vh; /* SCROLL FORCE */
-    overflow-x: hidden; touch-action: pan-y;
-  }
-.container { max-width: 500px; margin: 0 auto; padding-bottom: 80px; }
-.glass { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); }
-  h1, h2, h3, p, span, div, button { color: #1a1a1a; text-shadow: none; }
-.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.topbar span { font-weight: 700; font-size: 16px; }
-.btn-shop { background: #000; color: #fff!important; border: none; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
-  h1 { text-align: center; font-size: 26px; margin-bottom: 15px; font-weight: 800; }
-.btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; color: #fff!important; }
-.btn:hover { transform: scale(1.02); }
-.btn-earn { background: linear-gradient(90deg, #ff8a00, #ff3d00); }
-.btn-task { background: linear-gradient(90deg, #00c853, #00b0ff); }
-.btn-join { background: linear-gradient(90deg, #00e676, #00b0ff); color: #000!important; }
-.status { text-align: center; margin-top: 10px; font-weight: 600; }
-.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-  video { width: 100%; border-radius: 15px; background: #000; aspect-ratio: 9/16; object-fit: cover; }
-.hidden { display: none!important; }
-.spacer { height: 300px; background: rgba(0,0,0,0.05); border-radius: 10px; margin-top: 20px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; }
+:root {
+  --bg: #0A0A12;
+  --card: #151521;
+  --card-2: #1E1E2D;
+  --purple: #8A2BE2;
+  --pink: #FF2E88;
+  --text: #FFFFFF;
+  --text-2: #B4B4C8;
+  --green: #00E676;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+/* HEADER */
+.header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: rgba(10,10,18,0.8); backdrop-filter: blur(10px); z-index: 10; }
+.header-left { display: flex; align-items: center; gap: 10px; }
+.header-left img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--purple); }
+.room-title { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 4px; }
+.room-title .tick { color: var(--purple); }
+.room-id { font-size: 12px; color: var(--text-2); }
+.follow-btn { background: linear-gradient(90deg, var(--purple), var(--pink)); border: none; color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 12px; }
+.header-right { display: flex; align-items: center; gap: 8px; }
+.header-avatars { display: flex; margin-right: -8px; }
+.header-avatars img { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--bg); margin-left: -8px; }
+.viewers { font-size: 12px; font-weight: 700; }
+
+/* MAIN LAYOUT */
+.main { flex: 1; display: grid; grid-template-columns: 1fr 280px; gap: 12px; padding: 12px; overflow: hidden; }
+@media (max-width: 900px) { .main { grid-template-columns: 1fr; } .sidebar { display: none; }
+
+/* STAGE GRID 2x3 */
+.stage { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 10px; }
+.stage .host { grid-row: span 2; grid-column: span 1; }
+.video-card { background: var(--card); border-radius: 16px; position: relative; overflow: hidden; border: 1px solid #2A2A3D; }
+.video-card.host { border: 2px solid var(--purple); box-shadow: 0 0 20px rgba(138,43,226,0.4); }
+.video-card img { width: 100%; height: 100%; object-fit: cover; }
+.video-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7)); }
+.host-badge { position: absolute; top: 8px; left: 8px; background: var(--purple); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.slot-num { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); padding: 4px 6px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.user-info { position: absolute; bottom: 8px; left: 8px; }
+.user-name { font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 4px; }
+.user-name .tick { color: var(--purple); font-size: 12px; }
+.user-likes { font-size: 11px; color: var(--text-2); display: flex; align-items: center; gap: 4px; }
+.mic-icon { position: absolute; top: 8px; right: 40px; opacity: 0.8; }
+
+/* SIDEBAR */
+.sidebar { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+.sidebar::-webkit-scrollbar { width: 4px; } .sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+.card { background: var(--card); border-radius: 16px; padding: 12px; border: 1px solid #2A2A3D; }
+.card-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; }
+.audience-list { display: flex; flex-direction: column; gap: 10px; max-height: 200px; overflow-y: auto; }
+.audience-item { display: flex; align-items: center; justify-content: space-between; }
+.audience-user { display: flex; align-items: center; gap: 8px; }
+.audience-user img { width: 32px; height: 32px; border-radius: 50%; }
+.audience-name { font-size: 13px; font-weight: 600; }
+.audience-coins { font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 3px; }
+.plus-btn { width: 24px; height: 24px; border-radius: 50%; background: var(--card-2); border: none; color: var(--text); font-size: 16px; }
+
+.top-gifter { text-align: center; }
+.gifter-podium { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 10px 0; }
+.gifter { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.gifter img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #555; }
+.gifter.rank1 img { width: 52px; height: 52px; border-color: gold; }
+.gifter.rank1 { order: 2; } .gifter.rank2 { order: 1; } .gifter.rank3 { order: 3; }
+.crown { font-size: 18px; }
+.gifter-name { font-size: 11px; } .gifter-coins { font-size: 10px; color: var(--green); }
+
+.gift-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.gift-item { background: var(--card-2); border-radius: 12px; padding: 8px; text-align: center; font-size: 24px; cursor: pointer; }
+.gift-price { font-size: 10px; color: var(--green); margin-top: 4px; }
+.send-gift-btn { width: 100%; background: var(--pink); border: none; color: #fff; padding: 10px; border-radius: 12px; font-weight: 700; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.recharge-btn { width: 100%; background: var(--card-2); border: 1px solid #333; color: var(--text); padding: 10px; border-radius: 12px; font-weight: 700; margin-top: 6px; display: flex; align-items: center; justify-content: space-between; }
+
+/* CHAT + ANNOUNCEMENT */
+.bottom-area { padding: 0 12px 12px; }
+.announcement { background: rgba(138,43,226,0.1); border: 1px solid rgba(138,43,226,0.3); border-radius: 12px; padding: 10px; display: flex; gap: 10px; margin-bottom: 10px; }
+.announcement .icon { font-size: 24px; }
+.announcement-title { color: var(--purple); font-size: 12px; font-weight: 700; }
+.announcement-text { font-size: 12px; color: var(--text-2); }
+
+.chat-box { background: var(--card); border-radius: 16px; padding: 10px; height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.chat-msg { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.chat-msg img { width: 24px; height: 24px; border-radius: 50%; }
+.chat-level { background: var(--purple); font-size: 10px; padding: 2px 5px; border-radius: 4px; font-weight: 700; }
+.chat-gift { color: #FFD700; }
+.chat-like { margin-left: auto; color: var(--pink); }
+
+.input-bar { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.input-bar input { flex: 1; background: var(--card); border: 1px solid #2A2A3D; border-radius: 20px; padding: 10px 14px; color: var(--text); outline: none; }
+.input-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--card); display: grid; place-items: center; border: 1px solid #2A2A3D; }
+.gift-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--pink); display: grid; place-items: center; border: none; font-size: 20px; }
+
+/* MONETAG AD */
+.monetag-ad { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); z-index: 50; }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="topbar glass">
-    <span id="userId">👑 Guest_....</span>
-    <span>Coins: <b id="coinBalance">0</b></span>
-    <button class="btn-shop" onclick="window.open('https://your-shop.com', '_blank')">Shop 🛒</button>
-  </div>
-  <div class="glass">
-    <h1>🔥 KhamChat VIP Party 🔥</h1>
-    <button class="btn btn-earn" onclick="window.open('https://omg10.com/4/11217324', '_blank')">🎁 Earn Free Coins</button>
-    <button class="btn btn-task" onclick="claim100()">✅ Claim +100 Coins</button>
-    <button class="btn btn-join" id="videoBtn">🎥 Join Video Party</button> <!-- NO ONCLICK HERE -->
-    <p class="status" id="status">Status: Ready</p>
-    <div class="video-grid hidden" id="videoArea">
-      <video id="localVideo" autoplay muted playsinline></video>
-      <video id="remoteVideo" autoplay playsinline></video>
+
+<header class="header">
+  <div class="header-left">
+    <img src="https://i.pravatar.cc/100?u=host" alt="Host">
+    <div>
+      <div class="room-title">KhamChat Live Room <span class="tick">✔</span></div>
+      <div class="room-id">ID: 884512</div>
     </div>
-    <div class="spacer">⬇️ SCROLL TEST ⬇️</div>
+  </div>
+  <button class="follow-btn">+ Follow</button>
+  <div class="header-right">
+    <div class="header-avatars">
+      <img src="https://i.pravatar.cc/100?u=1"><img src="https://i.pravatar.cc/100?u=2"><img src="https://i.pravatar.cc/100?u=3">
+    </div>
+    <div class="viewers">12.5K</div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="stage">
+    <div class="video-card host">
+      <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=400" alt="Host">
+      <div class="video-overlay"></div>
+      <div class="host-badge">Host</div>
+      <div class="mic-icon">🔊</div>
+      <div class="user-info">
+        <div class="user-name">Amy Wilson</div>
+        <div class="user-likes">❤️ 125.8K</div>
+      </div>
+    </div>
+    <div class="video-card">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400" alt="2">
+      <div class="video-overlay"></div>
+      <div class="slot-num">2</div><div class="mic-icon">🔊</div>
+      <div class="user-info"><div class="user-name">Rahul <span class="tick">✔</span></div><div class="user-likes">❤️ 89.6K</div></div>
+    </div>
+    <div class="video-card">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400" alt="3">
+      <div class="video-overlay"></div>
+      <div class="slot-num">3</div><div class="mic-icon">🔊</div>
+      <div class="user-info"><div class="user-name">Sneha <span class="tick">✔</span></div><div class="user-likes">❤️ 68.7K</div></div>
+    </div>
+    <div class="video-card">
+      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400" alt="4">
+      <div class="video-overlay"></div>
+      <div class="slot-num">4</div><div class="mic-icon">🔊</div>
+      <div class="user-info"><div class="user-name">Vikram <span class="tick">✔</span></div><div class="user-likes">❤️ 48.9K</div></div>
+    </div>
+    <div class="video-card">
+      <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400" alt="5">
+      <div class="video-overlay"></div>
+      <div class="slot-num">5</div><div class="mic-icon">🔊</div>
+      <div class="user-info"><div class="user-name">Diya <span class="tick">✔</span></div><div class="user-likes">❤️ 35.7K</div></div>
+    </div>
+    <div class="video-card">
+      <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=400" alt="6">
+      <div class="video-overlay"></div>
+      <div class="slot-num">6</div><div class="mic-icon">🔊</div>
+      <div class="user-info"><div class="user-name">Arjun <span class="tick">✔</span></div><div class="user-likes">❤️ 29.3K</div></div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="card">
+      <div class="card-title">Audience <span>236</span></div>
+      <div class="audience-list">
+        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a1"><div><div class="audience-name">John Deep</div><div class="audience-coins">💎 5.2K</div></div></div><button class="plus-btn">+</button></div>
+        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a2"><div><div class="audience-name">Meera</div><div class="audience-coins">💎 3.4K</div></div></div><button class="plus-btn">+</button></div>
+        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a3"><div><div class="audience-name">Karan</div><div class="audience-coins">💎 2.8K</div></div></div><button class="plus-btn">+</button></div>
+        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a4"><div><div class="audience-name">Ananya</div><div class="audience-coins">💎 2.1K</div></div></div><button class="plus-btn">+</button></div>
+        <div class="audience-item"><div class="audience-user"><img src="https://i.pravatar.cc/100?u=a5"><div><div class="audience-name">Rohit</div><div class="audience-coins">💎 1.8K</div></div></div><button class="plus-btn">+</button></div>
+      </div>
+    </div>
+
+    <div class="card top-gifter">
+      <div class="card-title">Top Gifter</div>
+      <div class="gifter-podium">
+        <div class="gifter rank2"><img src="https://i.pravatar.cc/100?u=g2"><div class="gifter-name">Meera</div><div class="gifter-coins">9.2K</div></div>
+        <div class="gifter rank1"><div class="crown">👑</div><img src="https://i.pravatar.cc/100?u=g1"><div class="gifter-name">John Deep</div><div class="gifter-coins">12.5K</div></div>
+        <div class="gifter rank3"><img src="https://i.pravatar.cc/100?u=g3"><div class="gifter-name">Karan</div><div class="gifter-coins">7.1K</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Popular Gifts</div>
+      <div class="gift-grid">
+        <div class="gift-item">🌹<div class="gift-price">10</div></div>
+        <div class="gift-item">💖<div class="gift-price">100</div></div>
+        <div class="gift-item">💎<div class="gift-price">500</div></div>
+        <div class="gift-item">🚀<div class="gift-price">1K</div></div>
+        <div class="gift-item">🏰<div class="gift-price">5K</div></div>
+        <div class="gift-item">⭐<div class="gift-price">10K</div></div>
+      </div>
+      <button class="send-gift-btn">🎁 Send a Gift</button>
+      <button class="recharge-btn">🪙 Recharge <span>></span></button>
+    </div>
+  </aside>
+</main>
+
+<div class="bottom-area">
+  <div class="announcement">
+    <div class="icon">📢</div>
+    <div>
+      <div class="announcement-title">Room Announcement</div>
+      <div class="announcement-text">Welcome to KhamChat Live Room! Have fun and be respectful.</div>
+    </div>
+  </div>
+  <div class="chat-box" id="chatBox">
+    <div class="chat-msg"><img src="https://i.pravatar.cc/100?u=a2"><b>Meera</b> <span class="chat-level">28</span> Awesome session! 🔥 <span class="chat-like">❤️</span></div>
+    <div class="chat-msg"><img src="https://i.pravatar.cc/100?u=2"><b>Rahul</b> <span class="chat-level">24</span> Love the vibes! ❤️ <span class="chat-like">❤️</span></div>
+    <div class="chat-msg"><img src="https://i.pravatar.cc/100?u=a1"><b>John Deep</b> <span class="chat-level">35</span> <span class="chat-gift">Sent a Rocket 🚀 x1</span></div>
+  </div>
+  <div class="input-bar">
+    <div class="input-icon">💬</div>
+    <input type="text" placeholder="Say something...">
+    <div class="input-icon">😊</div>
+    <div class="input-icon">🛡️</div>
+    <div class="input-icon">👥</div>
+    <button class="gift-btn">🎁</button>
   </div>
 </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue, get, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+<!-- MONETAG AD ZONE - ID: 11217324 -->
+<div class="monetag-ad">
+<script src='https://omg10.com/4/11217324' data-zone='11217324' async data-cfasync='false'></script>
+</div>
 
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_ID",
-    appId: "YOUR_APP_ID"
-  };
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  const userId = 'Guest_' + Math.floor(Math.random() * 9000 + 1000);
-  document.getElementById('userId').innerText = `👑 ${userId}`;
-  set(ref(db, 'users/' + userId), { coins: 0 });
-  onValue(ref(db, 'users/' + userId + '/coins'), snap => {
-    document.getElementById('coinBalance').innerText = snap.val() || 0;
-  });
-
-  window.claim100 = () => {
-    const coinRef = ref(db, 'users/' + userId + '/coins');
-    get(coinRef).then(snap => {
-      const current = snap.val() || 0;
-      update(ref(db, 'users/' + userId), { coins: current + 100 });
-      alert('+100 Coins Added!');
-    });
-  };
-
-  // === KEY FIX: DIRECT CLICK LISTENER ===
-  document.getElementById('videoBtn').addEventListener('click', async () => {
-    document.getElementById('videoArea').classList.remove('hidden');
-    document.getElementById('status').innerText = 'Status: Requesting Camera...';
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true });
-      document.getElementById('localVideo').srcObject = stream;
-      document.getElementById('status').innerText = 'Status: In Party';
-    } catch (err) {
-      document.getElementById('status').innerText = 'Error: ' + err.name;
-      alert('Camera Blocked. Close all bubbles/apps. Error: ' + err.name);
-    }
-  });
-</script>
 </body>
 </html>
