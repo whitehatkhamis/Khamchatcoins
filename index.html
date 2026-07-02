@@ -1,73 +1,106 @@
 <!DOCTYPE html>
-<html lang="ha">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khamchat Earn</title>
+<meta name="monetag" content="76bfa2b9d77812389fea505343445b52">
+<title>Khamchat Tap Game</title>
 <style>
-  body { font-family: sans-serif; text-align: center; background: #0f172a; color: white; padding: 20px; }
-  .box { background: #1e293b; padding: 20px; border-radius: 15px; margin: 15px 0; }
-  .btn { background: #22c55e; color: white; padding: 15px; border-radius: 10px; border: none; width: 100%; font-size: 18px; margin-top: 10px; cursor: pointer; }
-  #balance { font-size: 28px; font-weight: bold; color: #facc15; }
+body{font-family:Arial;background:#1a1a2e;color:#fff;margin:0;text-align:center}
+.header{background:#6a0dad;padding:15px;font-size:22px;font-weight:bold}
+.balance-bar{background:#0f0f1e;padding:10px;font-size:18px}
+#tapBtn{width:250px;height:250px;border-radius:50%;background:#6a0dad;border:10px solid #fff;margin:30px auto;font-size:30px;font-weight:bold;color:#fff;cursor:pointer}
+.btn{background:#6a0dad;color:#fff;border:none;padding:12px;border-radius:10px;width:90%;margin:5px 5%;font-size:16px;font-weight:bold;cursor:pointer}
+.shop-item{background:#0f0f1e;margin:10px;padding:15px;border-radius:10px}
+.locked{opacity:0.5}
 </style>
 </head>
 <body>
 
-  <h1>💰 Khamchat Earn</h1>
-  
-  <div class="box">
-    <p>Balance Naka</p>
-    <div id="balance">0 Coins</div>
-  </div>
+<div class="header">Khamchat Tap 👑</div>
+<div class="balance-bar">
+  Coins: <span id="balance">0</span> | Points: <span id="points">0</span>
+</div>
 
-  <div class="box">
-    <h2>Earn Free Coins</h2>
-    <button class="btn" id="monetag-btn">Kalli Ad +50 Coins</button>
-  </div>
+<button id="tapBtn">TAP ME!</button>
 
-  <div class="box">
-    <h2>Shop - Redeem</h2>
-    <button class="btn" onclick="redeem(500)">500 Coins = $5 Airtime</button>
-    <button class="btn" onclick="redeem(1000)">1000 Coins = $10 Airtime</button>
+<div style="padding:15px">
+  <h3>Shop - Unlock Levels</h3>
+  <div class="shop-item" id="lvl2">
+    <b>Level 2: x2 Tap Power</b><br>
+    <button class="btn" onclick="buyLevel(2, 5000)">Buy 5000 Coins</button>
   </div>
+  <div class="shop-item locked" id="lvl3">
+    <b>Level 3: Auto Tapper</b><br>
+    <button class="btn" onclick="buyLevel(3, 20000)">Buy 20000 Coins</button>
+  </div>
+  <button class="btn" id="earnBtn">🎁 Watch Ad = +50 Coins</button>
+</div>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src='//fpyf8.com/1?z=3393531'></script> 
+
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAmFU0LSN5r0yYRyu2m5_sawLlZVpAM8a0",
-    authDomain: "khamchatcoins.firebaseapp.com",
-    databaseURL: "https://khamchatcoins-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "khamchatcoins",
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  
-  const userId = "user_test_1"; 
-  const balanceRef = db.ref('users/' + userId + '/balance');
+let coins = parseInt(localStorage.getItem('kham_coins')) || 0;
+let points = parseInt(localStorage.getItem('kham_points')) || 0;
+let level = parseInt(localStorage.getItem('kham_level')) || 1;
+let autoTap = false;
+let tapPower = 1;
 
-  balanceRef.on('value', (s) => {
-    document.getElementById('balance').innerText = (s.val() || 0) + " Coins";
-  });
-  
-  function addCoins(a){ balanceRef.set((s)=> (s.val()||0)+a); }
+const balanceEl = document.getElementById('balance');
+const pointsEl = document.getElementById('points');
+const tapBtn = document.getElementById('tapBtn');
 
-  function redeem(need){
-    balanceRef.once('value').then(s=>{
-      let bal = s.val()||0;
-      if(bal >= need){ 
-        balanceRef.set(bal-need); 
-        alert("An cire "+need+" Coins. Za mu tura maka Airtime nan ba da jimawa ba.");
-      } else { alert("Balance baya isa. Kana bukatar "+need); }
-    });
+function updateUI(){
+  balanceEl.innerText = coins;
+  pointsEl.innerText = points;
+  if(level >= 2){ document.getElementById('lvl2').classList.remove('locked'); tapPower = 2; }
+  if(level >= 3){ document.getElementById('lvl3').classList.remove('locked'); autoTap = true; }
+}
+updateUI();
+
+// TAP BUTTON
+tapBtn.onclick = () => {
+  points += tapPower;
+  pointsEl.innerText = points;
+  localStorage.setItem('kham_points', points);
+  tapBtn.style.transform = 'scale(0.95)';
+  setTimeout(()=> tapBtn.style.transform = 'scale(1)', 100);
+}
+
+// AUTO TAP FOR LEVEL 3
+setInterval(()=>{
+  if(autoTap){
+    points += tapPower;
+    pointsEl.innerText = points;
+    localStorage.setItem('kham_points', points);
   }
+}, 1000);
 
-  // MONETAG ZAI ZO ANAN
-  document.getElementById('monetag-btn').onclick = () => {
-    alert("Daga baya Monetag zai bude nan. Yanzu don gwaji: +50 Coins");
-    addCoins(50); // Wannan don gwaji kawai
+// WATCH AD
+document.getElementById('earnBtn').onclick = () => show_3393531();
+function show_3393531_rewarded() { 
+    coins += 50;
+    localStorage.setItem('kham_coins', coins);
+    updateUI();
+    alert('✅ +50 Coins added!');
+}
+
+// BUY LEVEL
+function buyLevel(lvl, cost){
+  if(coins >= cost && level < lvl){
+    coins -= cost;
+    level = lvl;
+    localStorage.setItem('kham_coins', coins);
+    localStorage.setItem('kham_level', level);
+    updateUI();
+    alert('✅ Level '+lvl+' Unlocked!');
+  } else if(level >= lvl){
+    alert('Already Unlocked');
+  } else {
+    alert('Not enough Coins');
   }
+}
 </script>
+
 </body>
 </html>
