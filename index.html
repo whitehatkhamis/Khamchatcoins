@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>KhamChat Live 6 - FREE</title>
+<title>KhamChat Live 6</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { margin:0; background:#0A0A12; font-family:sans-serif; }
-iframe { width:100%; height:100vh; border:none; }
+body { margin:0; background:#0A0A12; overflow:hidden; }
+#jitsi-container { width:100%; height:100vh; }
 #monetag { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:999; }
 h1 { position:fixed; top:10px; left:50%; transform:translateX(-50%); color:#fff; background:#8A2BE2; padding:8px 16px; border-radius:20px; font-size:14px; z-index:999; }
 </style>
 </head>
 <body>
 <h1>🔴 KhamChat Live Room</h1>
-
-<iframe 
-  src="https://meet.jit.si/KhamChatRoom2026" 
-  allow="camera; microphone; fullscreen; display-capture">
-</iframe>
+<div id="jitsi-container"></div>
 
 <!-- MONETAG REAL -->
 <div id="monetag">
   <button onclick="window.open('https://omg10.com/4/11217324','_blank')" 
-  style="background:gold;color:#000;border:none;padding:14px 26px;border-radius:20px;font-weight:900;font-size:16px;">
+  style="background:gold;color:#000;border:none;padding:14px 26px;border-radius:20px;font-weight:900;">
   💰 CLICK FOR REWARD
   </button>
 </div>
 
+<script src='https://meet.jit.si/external_api.js'></script>
 <script>
-const api = new JitsiMeetExternalAPI("meet.jit.si", {
-    roomName: "KhamChatRoom2026",
-    parentNode: undefined,
-    userInfo: { displayName: "Host" }
-});
+const domain = "meet.jit.si";
+const options = {
+    roomName: "KhamChatRoom2026", // <<<< Wannan shine `Room` naka. Duk wanda ya shigo zai hadu da kai
+    parentNode: document.getElementById('jitsi-container'),
+    userInfo: { displayName: "Guest" },
+    configOverwrite: {
+        startWithAudioMuted: false,
+        startWithVideoMuted: false,
+        disableDeepLinking: true, // <<<< Wannan zai hana `Join in app`
+        hideInviteAlert: true,
+    },
+    interfaceConfigOverwrite: {
+        APP_NAME: "KhamChat", // <<<< Yana canza `Jitsi Meet` zuwa `KhamChat`
+        SHOW_JITSI_WATERMARK: false,
+        SHOW_BRAND_WATERMARK: false,
+        SHOW_POWERED_BY: false,
+        TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup', 'chat', 'raisehand', 'tileview'],
+    }
+};
+const api = new JitsiMeetExternalAPI(domain, options);
 </script>
 </body>
 </html>
