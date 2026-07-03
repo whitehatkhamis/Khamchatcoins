@@ -1,46 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>KhamChat Live 6</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhamChat One Room Live</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <style>
-body { margin:0; background:#0A0A12; overflow:hidden; }
+html, body { margin:0; padding:0; height:100%; width:100%; overflow:hidden; background:#0A0A12; font-family:sans-serif; }
 #jitsi-container { width:100%; height:100vh; }
-#monetag { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:999; }
-h1 { position:fixed; top:10px; left:50%; transform:translateX(-50%); color:#fff; background:#8A2BE2; padding:8px 16px; border-radius:20px; font-size:14px; z-index:999; }
+#monetag { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:9999; }
+h1 { position:fixed; top:10px; left:50%; transform:translateX(-50%); color:#fff; background:#8A2BE2; padding:8px 16px; border-radius:20px; font-size:14px; z-index:9999; pointer-events:none; box-shadow:0 0 20px #8A2BE2; }
 </style>
 </head>
 <body>
-<h1>🔴 KhamChat Live Room</h1>
+<h1>🔴 KHAMCHAT WORLD PARTY | 50/50 LIVE</h1>
 <div id="jitsi-container"></div>
 
 <!-- MONETAG REAL -->
 <div id="monetag">
   <button onclick="window.open('https://omg10.com/4/11217324','_blank')" 
-  style="background:gold;color:#000;border:none;padding:14px 26px;border-radius:20px;font-weight:900;">
+  style="background:gold;color:#000;border:none;padding:14px 26px;border-radius:20px;font-weight:900;font-size:16px;box-shadow:0 0 20px gold;">
   💰 CLICK FOR REWARD
   </button>
 </div>
 
-<script src='https://meet.jit.si/external_api.js'></script>
+<script src='https://8x8.vc/external_api.js'></script>
 <script>
-const domain = "meet.jit.si";
+const domain = "8x8.vc";
 const options = {
-    roomName: "KhamChatRoom2026", // <<<< Wannan shine `Room` naka. Duk wanda ya shigo zai hadu da kai
+    roomName: "KhamChatWorldPartyONLY", // <<<< 1. ONE ROOM ONLY. Wannan suna baya canzawa har abada
     parentNode: document.getElementById('jitsi-container'),
-    userInfo: { displayName: "Guest" },
+    userInfo: { displayName: "Guest" + Math.floor(Math.random()*9999) }, // <<<< Suna na bazata
     configOverwrite: {
-        startWithAudioMuted: false,
-        startWithVideoMuted: false,
-        disableDeepLinking: true, // <<<< Wannan zai hana `Join in app`
-        hideInviteAlert: true,
+        startWithAudioMuted: false, // <<<< 2. YAYA ZAI FARA LIVE: Mic ON kai tsaye da ya shigo
+        startWithVideoMuted: true,  // <<<< Voice Only Party
+        disableDeepLinking: true, // <<<< Hana App 
+        prejoinPageEnabled: false, // <<<< Hana `Waiting Room`. Kai tsaye cikin Live
+        requireDisplayName: false,
+        disableModeratorIndicator: true, // <<<< Babu Host. Duk daidai suke
+        enableWelcomePage: false, // <<<< Hana Shafin `Welcome`
     },
     interfaceConfigOverwrite: {
-        APP_NAME: "KhamChat", // <<<< Yana canza `Jitsi Meet` zuwa `KhamChat`
+        APP_NAME: "KhamChat", // <<<< Yana nuna `KhamChat` kawai
         SHOW_JITSI_WATERMARK: false,
         SHOW_BRAND_WATERMARK: false,
         SHOW_POWERED_BY: false,
-        TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup', 'chat', 'raisehand', 'tileview'],
+        MOBILE_APP_PROMO: false,
+        TOOLBAR_BUTTONS: ['microphone', 'hangup', 'chat'], // <<<< Kawai Mic, Bar, Chat
     }
 };
 const api = new JitsiMeetExternalAPI(domain, options);
