@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>KhamChat Party + Ludo</title>
+<title>KhamChat Party + Ludo FREE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <style>
 html, body { 
   margin:0; padding:0; width:100%; 
-  overflow-y:auto; /* ALLOW SCROLL */ 
-  background:#0A0A12; 
+  overflow-y:auto; background:#0A0A12; 
   font-family:Arial, sans-serif; 
   touch-action: manipulation; 
 }
@@ -31,14 +30,10 @@ html, body {
   border-radius:20px; font-weight:900; font-size:16px; 
   box-shadow:0 0 20px #00FF88; cursor:pointer;
 }
-#ludoBox {
-  display:none; width:100%; height:60vh; min-height:400px; margin-top:20px;
+.room-frame {
+  width:100%; height:100%; border:0; 
 }
-#ludoBox iframe { width:100%; height:100%; border:none; }
-#closeLudo {
-  width:90%; margin:10px auto; display:none; background:red; color:#fff;
-  border:none; border-radius:20px; padding:10px; font-size:16px; font-weight:900; cursor:pointer;
-}
+/* CIRE G: MUNA FORCE VIDEO ON BY DEFAULT TA IFRAME URL */
 </style>
 </head>
 <body>
@@ -48,74 +43,42 @@ html, body {
   <button id="rewardBtn" onclick="window.open('https://omg10.com/4/11217324','_blank')">💰 REWARD</button>
 </div>
 
-<div id="jitsi-container"></div>
+<!-- MAIN PARTY ROOM = IFRAME = FREE UNLIMITED -->
+<div id="jitsi-container">
+  <iframe 
+    id="mainRoom"
+    class="room-frame"
+    allow="camera; microphone; display-capture; autoplay; fullscreen"
+    src="https://meet.jit.si/KhamChatWorldPartyONLY#config.startWithAudioMuted=false&config.startWithVideoMuted=false&config.prejoinPageEnabled=false&config.disableDeepLinking=true&userInfo.displayName=Guest">
+  </iframe>
+</div>
 
 <button id="ludoBtn" onclick="openLudo()">🎲 LUDO CHALLENGE - VIDEO ON</button>
 
-<div id="ludoBox"></div>
-<button id="closeLudo" onclick="closeLudo()">X CLOSE LUDO ROOM</button>
+<div id="ludoBox" style="display:none; width:100%; height:60vh; min-height:400px; margin-top:20px;"></div>
+<button id="closeLudo" onclick="closeLudo()" style="width:90%; margin:10px auto; display:none; background:red; color:#fff; border:none; border-radius:20px; padding:10px; font-size:16px; font-weight:900; cursor:pointer;">X CLOSE LUDO ROOM</button>
 
-<script src='https://meet.jit.si/external_api.js'></script> <!-- CHANGED FROM 8x8.vc -->
 <script>
-let mainApi, ludoApi;
-
-// MAIN ROOM = MEET.JIT.SI = NO LOGIN, NO JOIN BUTTON
-const mainOptions = {
-    roomName: "KhamChatWorldPartyONLY",
-    parentNode: document.getElementById('jitsi-container'),
-    userInfo: { displayName: "Guest" + Math.floor(Math.random()*9999) },
-    configOverwrite: {
-        startWithAudioMuted: false, // MIC ON
-        startWithVideoMuted: true,  // CAMERA OFF
-        prejoinPageEnabled: false, 
-        disableDeepLinking: true, 
-        disableModeratorIndicator: true, 
-        startAudioOnly: true, // <<<< FORCE VOICE ONLY
-    },
-    interfaceConfigOverwrite: {
-        APP_NAME: "KhamChat", 
-        SHOW_JITSI_WATERMARK: false,
-        SHOW_BRAND_WATERMARK: false,
-        SHOW_POWERED_BY: false,
-        MOBILE_APP_PROMO: false, 
-        TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup', 'chat'], 
-    }
-};
-mainApi = new JitsiMeetExternalAPI("meet.jit.si", mainOptions); // CHANGED DOMAIN
-
-// LUDO ROOM = REAL VIDEO ROOM
 function openLudo(){
   document.getElementById('ludoBox').style.display = 'block';
   document.getElementById('closeLudo').style.display = 'block';
   document.getElementById('ludoBtn').style.display = 'none';
   
-  const ludoRoomName = "KhamChatLudo-" + Math.floor(Math.random()*999);
+  const ludoRoomName = "KhamChatLudo-" + Math.floor(Math.random()*9999);
   
-  const ludoOptions = {
-      roomName: ludoRoomName,
-      parentNode: document.getElementById('ludoBox'),
-      userInfo: { displayName: "Player" + Math.floor(Math.random()*999) },
-      configOverwrite: {
-          startWithAudioMuted: false, 
-          startWithVideoMuted: false, // VIDEO ON FOR LUDO
-          prejoinPageEnabled: false, 
-          startAudioOnly: false, 
-      },
-      interfaceConfigOverwrite: {
-          APP_NAME: "KhamChat Ludo", 
-          SHOW_JITSI_WATERMARK: false,
-          MOBILE_APP_PROMO: false, 
-          TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup', 'chat'], 
-      }
-  };
-  ludoApi = new JitsiMeetExternalAPI("meet.jit.si", ludoOptions); // CHANGED DOMAIN
+  document.getElementById('ludoBox').innerHTML = 
+  `<iframe 
+    class="room-frame"
+    allow="camera; microphone; display-capture; autoplay; fullscreen"
+    src="https://meet.jit.si/${ludoRoomName}#config.startWithAudioMuted=false&config.startWithVideoMuted=false&config.prejoinPageEnabled=false">
+  </iframe>`;
 }
 
 function closeLudo(){
-  if(ludoApi){ ludoApi.dispose(); }
   document.getElementById('ludoBox').style.display = 'none';
   document.getElementById('closeLudo').style.display = 'none';
   document.getElementById('ludoBtn').style.display = 'block';
+  document.getElementById('ludoBox').innerHTML = ''; // KILL LUDO
 }
 </script>
 </body>
