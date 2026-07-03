@@ -1,85 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
+<title>KhamChat Live 6 - FREE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KhamChat Global</title>
 <style>
-:root { --bg: #0A0A12; --card: #151521; --purple: #8A2BE2; --pink: #FF2E88; --text: #FFF; }
-body { background: var(--bg); color: var(--text); margin:0; height:100vh; display:flex; flex-direction:column; }
-.header { display:flex; justify-content:space-between; padding:10px; background:#000; }
-.stage { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:10px; flex:1; }
-.video-card { background:var(--card); border-radius:16px; position:relative; border:1px solid #333; min-height:150px; }
-.video-card video { width:100%; height:100%; object-fit:cover; background:#000; border-radius:16px; }
-.join-btn { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:var(--pink); border:none; color:#fff; padding:10px 20px; border-radius:20px; font-weight:700; cursor:pointer; }
-.monetag { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:99; }
+body { margin:0; background:#0A0A12; font-family:sans-serif; }
+iframe { width:100%; height:100vh; border:none; }
+#monetag { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:999; }
+h1 { position:fixed; top:10px; left:50%; transform:translateX(-50%); color:#fff; background:#8A2BE2; padding:8px 16px; border-radius:20px; font-size:14px; z-index:999; }
 </style>
 </head>
 <body>
-<header class="header"><div><b>KhamChat</b> <span id="roomId"></span></div><button id="joinBtn" style="background:var(--pink);border:none;color:#fff;padding:6px 12px;border-radius:20px;">Join Host</button></header>
-<main class="stage">
-<div class="video-card"><video id="v1" autoplay playsinline muted></video><div id="b1" class="join-btn">Join Slot1</div></div>
-<div class="video-card"><video id="v2" autoplay playsinline></video><div id="b2" class="join-btn">Join Slot2</div></div>
-<div class="video-card"><video id="v3" autoplay playsinline></video><div id="b3" class="join-btn">Join Slot3</div></div>
-<div class="video-card"><video id="v4" autoplay playsinline></video><div id="b4" class="join-btn">Join Slot4</div></div>
-<div class="video-card"><video id="v5" autoplay playsinline></video><div id="b5" class="join-btn">Join Slot5</div></div>
-<div class="video-card"><video id="v6" autoplay playsinline></video><div id="b6" class="join-btn">Join Slot6</div></div>
-</main>
+<h1>🔴 KhamChat Live Room</h1>
 
-<!-- 1. MONETAG REAL BUTTON -->
-<div class="monetag">
-  <button onclick="window.open('https://omg10.com/4/11217324','_blank')" style="background:#FFD700;color:#000;border:none;padding:12px 24px;border-radius:20px;font-weight:900;">💰 CLICK FOR REWARD</button>
+<iframe 
+  src="https://meet.jit.si/KhamChatRoom2026" 
+  allow="camera; microphone; fullscreen; display-capture">
+</iframe>
+
+<!-- MONETAG REAL -->
+<div id="monetag">
+  <button onclick="window.open('https://omg10.com/4/11217324','_blank')" 
+  style="background:gold;color:#000;border:none;padding:14px 26px;border-radius:20px;font-weight:900;font-size:16px;">
+  💰 CLICK FOR REWARD
+  </button>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set, onValue, onDisconnect, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const firebaseConfig = { apiKey: "AIzaSyAkN35nsJgxKvtVKTH2Y-IIg_jfr2fvDbI", authDomain: "khamchat-vip.firebaseapp.com", projectId: "khamchat-vip", storageBucket: "khamchat-vip.firebasestorage.app", messagingSenderId: "1085659754446", appId: "1:1085659754446:web:2d61fd965ef97044aec59f" };
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const roomId = window.location.hash.substring(1) || 'main';
-document.getElementById('roomId').innerText = '#' + roomId;
-const myId = Math.random().toString(36).substr(2,9);
-const pcConfig = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
-const peers = {};
-let mySlot = 0, myStream = null;
-
-async function join(s) {
-  if(await get(ref(db, `r/${roomId}/${s}`)).then(x=>x.exists())){alert('Taken');return;}
-  mySlot = s;
-  myStream = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
-  document.getElementById('v'+s).srcObject = myStream;
-  if(s===1) document.getElementById('v1').muted = true;
-  set(ref(db, `r/${roomId}/${s}`), myId);
-  onDisconnect(ref(db, `r/${roomId}/${s}`)).remove();
-  document.getElementById('b'+s).style.display='none';
-  
-  for(let i=1;i<=6;i++){ if(i!==s){ let x=await get(ref(db, `r/${roomId}/${i}`)); if(x.exists()) connect(i,false); }
-}
-
-function connect(remote, isCaller){
-  const pc = new RTCPeerConnection(pcConfig); peers[remote]=pc;
-  myStream.getTracks().forEach(t=>pc.addTrack(t,myStream));
-  pc.ontrack=e=>{document.getElementById('v'+remote).srcObject=e.streams[0]};
-  pc.onicecandidate=e=>{ if(e.candidate) set(ref(db, `sig/${roomId}/${remote}/${mySlot}`), {c:e.candidate}); };
-  if(isCaller){ pc.createOffer().then(o=>pc.setLocalDescription(o)).then(()=>{ set(ref(db, `sig/${roomId}/${remote}/${mySlot}`), {o:pc.localDescription}); }); }
-  onValue(ref(db, `sig/${roomId}/${mySlot}/${remote}`), async snap=>{
-    const d=snap.val(); if(!d) return;
-    if(d.o){ await pc.setRemoteDescription(d.o); const a=await pc.createAnswer(); await pc.setLocalDescription(a); set(ref(db, `sig/${roomId}/${remote}/${mySlot}`), {a}); }
-    if(d.a){ pc.setRemoteDescription(d.a); }
-    if(d.c){ pc.addIceCandidate(d.c); }
-  });
-}
-
-for(let i=1;i<=6;i++){
-  document.getElementById('b'+i).onclick=()=>join(i);
-  onValue(ref(db, `r/${roomId}/${i}`), snap=>{
-    if(snap.exists() && snap.val()!==myId){ document.getElementById('b'+i).style.display='none'; connect(i,true); }
-    if(!snap.exists()){ document.getElementById('v'+i).srcObject=null; document.getElementById('b'+i).style.display='block'; if(peers[i]){peers[i].close(); delete peers[i];} }
-  });
-}
-document.getElementById('joinBtn').onclick=()=>join(1);
+<script>
+const api = new JitsiMeetExternalAPI("meet.jit.si", {
+    roomName: "KhamChatRoom2026",
+    parentNode: undefined,
+    userInfo: { displayName: "Host" }
+});
 </script>
 </body>
 </html>
