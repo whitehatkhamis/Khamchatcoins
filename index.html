@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>KhamChat World Party 🔴 LIVE | Talk to 50/50 Strangers</title>
+<title>KhamChat World Party 🔴 LIVE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Join KhamChat Party. Talk to boys and girls worldwide. Free, No Login, Camera ON.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap');
 
@@ -11,11 +10,12 @@
   --purple:#8A2BE2;
   --dark:#0A0A12;
   --gold:#FFD700;
+  --red:#FF3B30;
 }
 
 html, body { 
   margin:0; padding:0; width:100%; 
-  overflow-y:auto; /* ALLOW SCROLL FOR ISSUES */ 
+  overflow-y:auto; 
   background:var(--dark); 
   font-family:'Poppins', sans-serif; 
   color:#fff;
@@ -26,10 +26,10 @@ html, body {
   padding: 0 15px;
 }
 
-/* HEADER PRO DESIGN */
+/* HEADER */
 #topbar {
   position:sticky; top:0; left:0; width:100%; height:70px;
-  background: rgba(10, 10, 18, 0.85);
+  background: rgba(10, 10, 18, 0.9);
   backdrop-filter: blur(10px);
   z-index:99999; 
   border-bottom:2px solid var(--purple);
@@ -42,18 +42,13 @@ html, body {
 #logo { 
   font-size:20px; 
   font-weight:900; 
-  color:#fff;
-  text-shadow: 0 0 15px var(--purple);
   display:flex; align-items:center; gap:8px;
 }
 #liveDot {
   width:12px; height:12px; background:red; border-radius:50%;
   animation: blink 1s infinite;
-  box-shadow: 0 0 10px red;
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-/* REWARD BUTTON MAI KUDI SOSAI */
 #rewardBtn {
   background: linear-gradient(45deg, var(--gold), #FFA500);
   color:#000;border:none;padding:12px 22px;
@@ -61,103 +56,169 @@ html, body {
   box-shadow:0 0 25px var(--gold);
   cursor:pointer; animation: pulse 1.8s infinite;
   border:2px solid #fff;
-  transition: all 0.3s;
-}
-#rewardBtn:hover { transform: scale(1.1); }
-@keyframes pulse {
-  0% { box-shadow: 0 0 20px var(--gold); }
- 50% { box-shadow: 0 0 40px var(--gold); }
- 100% { box-shadow: 0 0 20px var(--gold); }
 }
 
-/* HERO SECTION */
+/* VIDEO + CONTROLS KASA */
+#video-wrapper {
+  position:relative;
+  width:100%; 
+  height:70vh; 
+  min-height:420px; 
+  background:#000; 
+  border-radius:20px;
+  overflow:hidden;
+  border: 2px solid var(--purple);
+  margin: 20px 0;
+}
+.room-frame {
+  width:100%; height:100%; border:0; 
+}
+
+/* KASAN SCREEN = CONTROL BAR */
+#controlBar {
+  position:fixed;
+  bottom:0; left:0; width:100%;
+  height:80px;
+  background: rgba(10, 10, 18, 0.95);
+  backdrop-filter: blur(15px);
+  border-top:2px solid var(--purple);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:15px;
+  z-index:999;
+  padding:0 10px;
+  box-sizing:border-box;
+}
+.controlBtn {
+  width:60px; height:60px; border-radius:50%;
+  border:none; cursor:pointer;
+  font-size:24px;
+  display:flex; align-items:center; justify-content:center;
+  transition: all 0.2s;
+}
+#goLiveBtn {
+  width: auto; height:60px; border-radius:30px;
+  background: var(--red); color:#fff;
+  font-weight:900; font-size:16px;
+  padding: 0 25px;
+  box-shadow: 0 0 20px var(--red);
+  animation: pulseRed 1.5s infinite;
+}
+@keyframes pulseRed {
+ 0% { box-shadow: 0 0 20px var(--red); }
+ 50% { box-shadow: 0 0 35px var(--red); }
+ 100% { box-shadow: 0 0 20px var(--red); }
+}
+#toggleCamBtn, #toggleMicBtn {
+  background:#333; color:#fff;
+}
+#toggleCamBtn.off, #toggleMicBtn.off { background:red; }
+
 .hero {
   text-align:center;
-  padding: 40px 0 20px 0;
+  padding: 20px 0;
 }
 .hero h1 {
-  font-size: clamp(24px, 5vw, 40px);
+  font-size: clamp(20px, 4vw, 32px);
   font-weight:900;
   margin:0;
   background: linear-gradient(90deg, #fff, var(--purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.hero p {
-  font-size: 16px;
-  color: #ccc;
-  margin-top: 10px;
-}
-
-/* VIDEO SECTION */
-#jitsi-container { 
-  width:100%; 
-  height:65vh; 
-  min-height:420px; 
-  background:#000; 
-  border-radius:20px;
-  overflow:hidden;
-  border: 2px solid var(--purple);
-  box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
-  margin-bottom: 30px;
-}
-.room-frame {
-  width:100%; height:100%; border:0; 
-}
-
-/* FOOTER / INFO SECTION */
-.info {
-  text-align:center;
-  padding: 20px 0 50px 0;
-  color:#aaa;
-  font-size:14px;
-}
-.info b { color: var(--gold); }
-
 </style>
 </head>
 <body>
 
 <header id="topbar">
   <div class="container">
-    <div id="logo"><div id="liveDot"></div> KHAMCHAT</div>
-    <button id="rewardBtn" onclick="window.open('https://omg10.com/4/11217324','_blank')">💰 CLAIM REWARD</button>
+    <div id="logo"><div id="liveDot"></div> KHAMCHAT LIVE</div>
+    <button id="rewardBtn" onclick="window.open('https://omg10.com/4/11217324','_blank')">💰 REWARD</button>
   </div>
 </header>
 
 <main class="container">
   <section class="hero">
-    <h1>🔴 WORLD PARTY LIVE 50/50</h1>
-    <p>Talk to Boys & Girls Worldwide. No Login. Camera ON. Free Forever.</p>
+    <h1>🔴 ANA LIVE YANZU</h1>
+    <p id="statusText">Kana kallo kawai. Danna 'Go Live' don shiga tattaunawa</p>
   </section>
 
-  <!-- PARTY ROOM KAWAI = VDO.NINJA = 100% JOIN -->
-  <div id="jitsi-container">
+  <!-- VIDEO ROOM -->
+  <div id="video-wrapper">
     <iframe 
       id="mainRoom"
       class="room-frame"
       allow="camera; microphone; display-capture; autoplay; fullscreen"
-      src="https://vdo.ninja/?room=KhamChatWorldPartyONLY&push=Guest&view=KhamChatWorldPartyONLY&quality=0&autostart&novideo=false&noaudio=false&nosettings&cleanoutput">
+      src="">
     </iframe>
   </div>
-
-  <section class="info">
-    <p><b>YADDA ZAKA SHIGA:</b> Danna `Allow` na Camera + Mic sau 1 kawai. That's all.</p>
-    <p>© 2026 KhamChat. Made in Kano, Nigeria 🇳🇬</p>
-  </section>
+  <div style="height:100px;"></div> <!-- SPACE DON KASAN SCREEN -->
 </main>
 
+<!-- KASAN SCREEN = BUTTONS -->
+<div id="controlBar">
+  <button class="controlBtn" id="toggleMicBtn" onclick="toggleMic()">🎤</button>
+  <button class="controlBtn" id="goLiveBtn" onclick="goLive()">🔴 GO LIVE</button>
+  <button class="controlBtn" id="toggleCamBtn" onclick="toggleCam()">📷</button>
+</div>
+
 <script>
-// POP-UNDER MONETAG MAI NUTSE
+const ROOM_NAME = "KhamChatWorldPartyONLY";
+let isLive = false;
+let camOn = true;
+let micOn = true;
+
+// TUN DAFARI: VIEWER MODE = BABU CAMERA, BABU MIC
+window.onload = () => {
+  const viewSrc = `https://vdo.ninja/?room=${ROOM_NAME}&view=${ROOM_NAME}&quality=0&autostart&novideo=false&noaudio=false&cleanoutput&exclude=${ROOM_NAME}`;
+  document.getElementById('mainRoom').src = viewSrc;
+}
+
+function goLive(){
+  if(isLive) return leaveLive(); // IDAN KANA LIVE, ZAMA LEAVE
+
+  isLive = true;
+  document.getElementById('statusText').innerText = "Kai ma kana Live yanzu! Kowa zai ji ka";
+  document.getElementById('goLiveBtn').innerHTML = "❌ LEAVE";
+  document.getElementById('goLiveBtn').style.background = '#555';
+
+  // SHIGA KAMAR BROADCASTER
+  const pushSrc = `https://vdo.ninja/?room=${ROOM_NAME}&push=Guest${Math.floor(Math.random()*999)}&view=${ROOM_NAME}&quality=0&autostart&novideo=false&noaudio=false&cleanoutput`;
+  document.getElementById('mainRoom').src = pushSrc;
+}
+
+function leaveLive(){
+  isLive = false;
+  document.getElementById('statusText').innerText = "Kana kallo kawai. Danna 'Go Live' don shiga tattaunawa";
+  document.getElementById('goLiveBtn').innerHTML = "🔴 GO LIVE";
+  document.getElementById('goLiveBtn').style.background = 'var(--red)';
+  window.onload(); // KOMA VIEWER MODE
+}
+
+function toggleCam(){
+  camOn = !camOn;
+  document.getElementById('toggleCamBtn').classList.toggle('off');
+  document.getElementById('toggleCamBtn').innerText = camOn ? '📷' : '🚫';
+  // vdo.ninja baya bada JS toggle, dole ya reload
+  if(isLive) goLive(); 
+}
+
+function toggleMic(){
+  micOn = !micOn;
+  document.getElementById('toggleMicBtn').classList.toggle('off');
+  document.getElementById('toggleMicBtn').innerText = micOn ? '🎤' : '🔇';
+  if(isLive) goLive();
+}
+
+// MONETAG POP-UNDER
 let monetagClicked = false;
 document.body.addEventListener('click', function(e){
-  // Kada ya bude idan ya danna button din reward
-  if(e.target.id === 'rewardBtn') return; 
-  
+  if(e.target.closest('#controlBar') || e.target.id === 'rewardBtn') return; 
   if(!monetagClicked){
     monetagClicked = true;
     window.open('https://omg10.com/4/11217324','_blank');
-    setTimeout(()=>{ monetagClicked = false; }, 8000); // 8 seconds cooldown don kada mu damu user
+    setTimeout(()=>{ monetagClicked = false; }, 8000);
   }
 });
 </script>
