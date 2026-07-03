@@ -1,84 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>KhamChat Party + Ludo FREE</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KhamChat World Party 🔴 LIVE | Talk to 50/50 Strangers</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Join KhamChat Party. Talk to boys and girls worldwide. Free, No Login, Camera ON.">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap');
+
+:root{
+  --purple:#8A2BE2;
+  --dark:#0A0A12;
+  --gold:#FFD700;
+}
+
 html, body { 
   margin:0; padding:0; width:100%; 
-  overflow-y:auto; background:#0A0A12; 
-  font-family:Arial, sans-serif; 
-  touch-action: manipulation; 
+  overflow-y:auto; /* ALLOW SCROLL FOR ISSUES */ 
+  background:var(--dark); 
+  font-family:'Poppins', sans-serif; 
+  color:#fff;
 }
-#jitsi-container { width:100%; height:60vh; min-height:400px; background:#000; }
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* HEADER PRO DESIGN */
 #topbar {
-  position:sticky; top:0; left:0; width:100%; height:55px;
-  background:#0A0A12; z-index:99999; display:flex; 
+  position:sticky; top:0; left:0; width:100%; height:70px;
+  background: rgba(10, 10, 18, 0.85);
+  backdrop-filter: blur(10px);
+  z-index:99999; 
+  border-bottom:2px solid var(--purple);
+}
+#topbar .container {
+  display:flex; 
   justify-content:space-between; align-items:center; 
-  padding:0 10px; box-sizing:border-box;
-  border-bottom:1px solid #8A2BE2;
+  height:100%;
 }
-#title { color:#fff; background:#8A2BE2; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:900; }
+#logo { 
+  font-size:20px; 
+  font-weight:900; 
+  color:#fff;
+  text-shadow: 0 0 15px var(--purple);
+  display:flex; align-items:center; gap:8px;
+}
+#liveDot {
+  width:12px; height:12px; background:red; border-radius:50%;
+  animation: blink 1s infinite;
+  box-shadow: 0 0 10px red;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* REWARD BUTTON MAI KUDI SOSAI */
 #rewardBtn {
-  background:gold;color:#000;border:none;padding:8px 14px;
-  border-radius:20px;font-weight:900;font-size:12px;
-  box-shadow:0 0 10px gold; cursor:pointer;
+  background: linear-gradient(45deg, var(--gold), #FFA500);
+  color:#000;border:none;padding:12px 22px;
+  border-radius:30px;font-weight:900;font-size:14px;
+  box-shadow:0 0 25px var(--gold);
+  cursor:pointer; animation: pulse 1.8s infinite;
+  border:2px solid #fff;
+  transition: all 0.3s;
 }
-#ludoBtn {
-  width:90%; margin:20px auto; display:block;
-  background:#00FF88; color:#000; border:none; padding:14px 28px; 
-  border-radius:20px; font-weight:900; font-size:16px; 
-  box-shadow:0 0 20px #00FF88; cursor:pointer;
+#rewardBtn:hover { transform: scale(1.1); }
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px var(--gold); }
+ 50% { box-shadow: 0 0 40px var(--gold); }
+ 100% { box-shadow: 0 0 20px var(--gold); }
+}
+
+/* HERO SECTION */
+.hero {
+  text-align:center;
+  padding: 40px 0 20px 0;
+}
+.hero h1 {
+  font-size: clamp(24px, 5vw, 40px);
+  font-weight:900;
+  margin:0;
+  background: linear-gradient(90deg, #fff, var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  font-size: 16px;
+  color: #ccc;
+  margin-top: 10px;
+}
+
+/* VIDEO SECTION */
+#jitsi-container { 
+  width:100%; 
+  height:65vh; 
+  min-height:420px; 
+  background:#000; 
+  border-radius:20px;
+  overflow:hidden;
+  border: 2px solid var(--purple);
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+  margin-bottom: 30px;
 }
 .room-frame {
   width:100%; height:100%; border:0; 
 }
+
+/* FOOTER / INFO SECTION */
+.info {
+  text-align:center;
+  padding: 20px 0 50px 0;
+  color:#aaa;
+  font-size:14px;
+}
+.info b { color: var(--gold); }
+
 </style>
 </head>
 <body>
 
-<div id="topbar">
-  <div id="title">🔴 KHAMCHAT WORLD PARTY | 50/50 LIVE</div>
-  <button id="rewardBtn" onclick="window.open('https://omg10.com/4/11217324','_blank')">💰 REWARD</button>
-</div>
+<header id="topbar">
+  <div class="container">
+    <div id="logo"><div id="liveDot"></div> KHAMCHAT</div>
+    <button id="rewardBtn" onclick="window.open('https://omg10.com/4/11217324','_blank')">💰 CLAIM REWARD</button>
+  </div>
+</header>
 
-<!-- MAIN PARTY ROOM = VDO.NINJA = FREE UNLIMITED -->
-<div id="jitsi-container">
-  <iframe 
-    id="mainRoom"
-    class="room-frame"
-    allow="camera; microphone; display-capture; autoplay; fullscreen"
-    src="https://vdo.ninja/?room=KhamChatWorldPartyONLY&push=Guest&view=KhamChatWorldPartyONLY&quality=0&autostart&novideo=false&noaudio=false">
-  </iframe>
-</div>
+<main class="container">
+  <section class="hero">
+    <h1>🔴 WORLD PARTY LIVE 50/50</h1>
+    <p>Talk to Boys & Girls Worldwide. No Login. Camera ON. Free Forever.</p>
+  </section>
 
-<button id="ludoBtn" onclick="openLudo()">🎲 LUDO CHALLENGE - VIDEO ON</button>
+  <!-- PARTY ROOM KAWAI = VDO.NINJA = 100% JOIN -->
+  <div id="jitsi-container">
+    <iframe 
+      id="mainRoom"
+      class="room-frame"
+      allow="camera; microphone; display-capture; autoplay; fullscreen"
+      src="https://vdo.ninja/?room=KhamChatWorldPartyONLY&push=Guest&view=KhamChatWorldPartyONLY&quality=0&autostart&novideo=false&noaudio=false&nosettings&cleanoutput">
+    </iframe>
+  </div>
 
-<div id="ludoBox" style="display:none; width:100%; height:60vh; min-height:400px; margin-top:20px;"></div>
-<button id="closeLudo" onclick="closeLudo()" style="width:90%; margin:10px auto; display:none; background:red; color:#fff; border:none; border-radius:20px; padding:10px; font-size:16px; font-weight:900; cursor:pointer;">X CLOSE LUDO ROOM</button>
+  <section class="info">
+    <p><b>YADDA ZAKA SHIGA:</b> Danna `Allow` na Camera + Mic sau 1 kawai. That's all.</p>
+    <p>© 2026 KhamChat. Made in Kano, Nigeria 🇳🇬</p>
+  </section>
+</main>
 
 <script>
-function openLudo(){
-  document.getElementById('ludoBox').style.display = 'block';
-  document.getElementById('closeLudo').style.display = 'block';
-  document.getElementById('ludoBtn').style.display = 'none';
+// POP-UNDER MONETAG MAI NUTSE
+let monetagClicked = false;
+document.body.addEventListener('click', function(e){
+  // Kada ya bude idan ya danna button din reward
+  if(e.target.id === 'rewardBtn') return; 
   
-  const ludoRoomName = "KhamChatLudo" + Math.floor(Math.random()*9999);
-  
-  document.getElementById('ludoBox').innerHTML = 
-  `<iframe 
-    class="room-frame"
-    allow="camera; microphone; display-capture; autoplay; fullscreen"
-    src="https://vdo.ninja/?room=${ludoRoomName}&push=Player&view=${ludoRoomName}&quality=0&autostart&novideo=false&noaudio=false">
-  </iframe>`;
-}
-
-function closeLudo(){
-  document.getElementById('ludoBox').style.display = 'none';
-  document.getElementById('closeLudo').style.display = 'none';
-  document.getElementById('ludoBtn').style.display = 'block';
-  document.getElementById('ludoBox').innerHTML = ''; 
-}
+  if(!monetagClicked){
+    monetagClicked = true;
+    window.open('https://omg10.com/4/11217324','_blank');
+    setTimeout(()=>{ monetagClicked = false; }, 8000); // 8 seconds cooldown don kada mu damu user
+  }
+});
 </script>
+
 </body>
 </html>
