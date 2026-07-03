@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 <title>KhamChat Party + Ludo</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- NO ZOOM -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <style>
 html, body { 
   margin:0; padding:0; width:100%; 
   overflow-y:auto; /* ALLOW SCROLL */ 
   background:#0A0A12; 
   font-family:Arial, sans-serif; 
-  touch-action: manipulation; /* NO ZOOM, BUT ALLOW SCROLL */
+  touch-action: manipulation; /* NO ZOOM */
 }
 #jitsi-container { width:100%; height:60vh; min-height:400px; }
 #topbar {
@@ -43,19 +43,15 @@ html, body {
 </head>
 <body>
 
-<!-- TOP BAR: TITLE + REWARD BUTTON -->
 <div id="topbar">
   <div id="title">🔴 KHAMCHAT WORLD PARTY | 50/50 LIVE</div>
   <button id="rewardBtn" onclick="window.open('https://omg10.com/4/11217324','_blank')">💰 REWARD</button>
 </div>
 
-<!-- MAIN PARTY ROOM: VOICE ONLY -->
 <div id="jitsi-container"></div>
 
-<!-- LUDO CHALLENGE BUTTON -->
 <button id="ludoBtn" onclick="openLudo()">🎲 LUDO CHALLENGE - VIDEO ON</button>
 
-<!-- REAL LUDO ROOM -->
 <div id="ludoBox"></div>
 <button id="closeLudo" onclick="closeLudo()">X CLOSE LUDO ROOM</button>
 
@@ -63,19 +59,19 @@ html, body {
 <script>
 let mainApi, ludoApi;
 
-// 1. MAIN ROOM = VOICE ONLY, MIC ON, CAMERA OFF BY DEFAULT
+// MAIN ROOM = DIRECT JOIN, NO PREJOIN SCREEN
 const mainOptions = {
-    roomName: "KhamChatWorldPartyONLY", // ONE ROOM ONLY
+    roomName: "KhamChatWorldPartyONLY",
     parentNode: document.getElementById('jitsi-container'),
     userInfo: { displayName: "Guest" + Math.floor(Math.random()*9999) },
     configOverwrite: {
-        startWithAudioMuted: false, // AUTO MIC ON = START LIVE
-        startWithVideoMuted: true,  // CAMERA OFF BY DEFAULT
-        disableDeepLinking: true, 
-        prejoinPageEnabled: false, // NO WAITING ROOM
-        requireDisplayName: false,
-        disableModeratorIndicator: true, 
-        enableUserRolesBasedOnToken: false, // NO LOGIN REQUIRED
+        startWithAudioMuted: false, // MIC ON
+        startWithVideoMuted: true,  // CAMERA OFF
+        prejoinPageEnabled: false, // KILL PREJOIN 
+        skipPrejoin: true, // <<<< FORCE SKIP
+        disableThirdPartyRequests: true, // <<<< BLOCK APP PROMPT
+        disableDeepLinking: true, // <<<< BLOCK APP STORE LINK
+        enableUserRolesBasedOnToken: false, 
         roomPasswordNumberOfDigits: 0, 
         anonymousdomain: 'guest.8x8.vc', 
     },
@@ -84,42 +80,46 @@ const mainOptions = {
         SHOW_JITSI_WATERMARK: false,
         SHOW_BRAND_WATERMARK: false,
         SHOW_POWERED_BY: false,
-        MOBILE_APP_PROMO: false,
-        TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup', 'chat'], // USER CAN ENABLE CAMERA
+        MOBILE_APP_PROMO: false, // <<<< HIDE APP BANNER
+        TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup', 'chat'], 
     }
 };
 mainApi = new JitsiMeetExternalAPI("8x8.vc", mainOptions);
 
-// 2. LUDO ROOM = REAL AUDIO + VIDEO, USER CAN DISABLE CAMERA
+// LUDO ROOM = REAL VIDEO ROOM
 function openLudo(){
   document.getElementById('ludoBox').style.display = 'block';
   document.getElementById('closeLudo').style.display = 'block';
   document.getElementById('ludoBtn').style.display = 'none';
   
-  const ludoRoomName = "KhamChatLudo-" + Math.floor(Math.random()*999999); // NEW ROOM FOR 2 PEOPLE
+  const ludoRoomName = "KhamChatLudo-" + Math.floor(Math.random()*999999);
   
   const ludoOptions = {
-      roomName: ludoRoomName, // REAL SEPARATE ROOM
+      roomName: ludoRoomName,
       parentNode: document.getElementById('ludoBox'),
       userInfo: { displayName: "Player" + Math.floor(Math.random()*999) },
       configOverwrite: {
-          startWithAudioMuted: false, // MIC ON
-          startWithVideoMuted: false, // VIDEO ON BY DEFAULT FOR LUDO
+          startWithAudioMuted: false, 
+          startWithVideoMuted: false, // VIDEO ON
           prejoinPageEnabled: false, 
-          enableUserRolesBasedOnToken: false, // NO LOGIN
+          skipPrejoin: true, // <<<< FORCE SKIP
+          disableThirdPartyRequests: true,
+          disableDeepLinking: true,
+          enableUserRolesBasedOnToken: false, 
           anonymousdomain: 'guest.8x8.vc',
       },
       interfaceConfigOverwrite: {
           APP_NAME: "KhamChat Ludo", 
           SHOW_JITSI_WATERMARK: false,
-          TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup', 'chat', 'screen'], // USER CAN CLICK CAMERA TO DISABLE
+          MOBILE_APP_PROMO: false, // <<<< HIDE APP BANNER
+          TOOLBAR_BUTTONS: ['microphone', 'camera', 'hangup', 'chat'], 
       }
   };
   ludoApi = new JitsiMeetExternalAPI("8x8.vc", ludoOptions);
 }
 
 function closeLudo(){
-  if(ludoApi){ ludoApi.dispose(); } // KILL LUDO ROOM
+  if(ludoApi){ ludoApi.dispose(); }
   document.getElementById('ludoBox').style.display = 'none';
   document.getElementById('closeLudo').style.display = 'none';
   document.getElementById('ludoBtn').style.display = 'block';
