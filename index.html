@@ -6,18 +6,31 @@
 <title>SparkUp</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-:root { --pink: #FF2D55; --bg: #F5F5F5; --blue: #0084FF; }
+:root {
+  --pink: #FF2D55;
+  --bg: #F5F5F5;
+  --blue: #0084FF;
+  --card: white;
+  --text: #000;
+  --border: #eee;
+}
+body.dark {
+  --bg: #121212;
+  --card: #1E1E1E;
+  --text: #FFF;
+  --border: #333;
+}
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-html, body { width:100%; height:100%; background:var(--bg); overflow-x:hidden; }
-.screen { width:100%; max-width:100%; margin:0; min-height:100vh; background:white; position:relative; }
-header { text-align:center; padding:15px; font-size:26px; font-weight:700; color:var(--pink); border-bottom:1px solid #eee; }
-.tabs { display:flex; justify-content:space-around; border-bottom:2px solid #eee; }
-.tab { padding:12px; font-weight:600; color:#888; cursor:pointer; font-size:16px; }
+html, body { width:100%; height:100%; background:var(--bg); color:var(--text); overflow-x:hidden; }
+.screen { width:100%; max-width:100%; margin:0; min-height:100vh; background:var(--card); position:relative; }
+header { text-align:center; padding:15px; font-size:26px; font-weight:700; color:var(--pink); border-bottom:1px solid var(--border); }
+.tabs { display:flex; justify-content:space-around; border-bottom:2px solid var(--border); background:var(--card); }
+.tab { padding:12px; font-weight:600; color:#888; cursor:pointer; font-size:14px; }
 .tab.active { color:var(--pink); border-bottom:3px solid var(--pink); }
-.auth input,.filter-bar input,.profile-edit input,.profile-edit textarea { width:100%; padding:14px; margin:10px 0; border-radius:12px; border:1px solid #ddd; font-size:16px; }
+.auth input,.filter-bar input,.profile-edit input,.profile-edit textarea,.profile-edit select { width:100%; padding:14px; margin:10px 0; border-radius:12px; border:1px solid var(--border); font-size:16px; background:var(--bg); color:var(--text); }
 .auth button { width:100%; padding:14px; background:var(--pink); color:white; border:none; border-radius:12px; font-weight:600; font-size:16px; cursor:pointer; margin-top:10px; }
-.filter-bar { padding:10px; display:flex; gap:10px; background:#fafafa; }
-.filter-bar input { flex:1; padding:12px; border-radius:10px; border:1px solid #ddd; font-size:16px; }
+.filter-bar { padding:10px; display:flex; gap:10px; background:var(--bg); }
+.filter-bar input { flex:1; padding:12px; border-radius:10px; border:1px solid var(--border); font-size:16px; background:var(--card); color:var(--text); }
 .filter-bar button { padding:12px 20px; background:var(--pink); color:white; border:none; border-radius:10px; font-weight:600; font-size:16px; }
 .card-wrapper { padding:10px 15px; }
 .card { width:100%; height:60vh; border-radius:20px; background-size:cover; background-position:center; box-shadow:0 10px 30px rgba(0,0,0,0.15); position:relative; }
@@ -25,20 +38,20 @@ header { text-align:center; padding:15px; font-size:26px; font-weight:700; color
 .card-info h2 { font-size:28px; font-weight:700; display:flex; align-items:center; gap:8px; }
 .verify { color:#0084FF; font-size:22px; }
 .buttons { display:flex; justify-content:center; gap:30px; padding:20px; }
-.btn { width:65px; height:65px; border-radius:50%; border:none; font-size:32px; background:white; box-shadow:0 5px 20px rgba(0,0,0,0.1); cursor:pointer; }
-.chat-item { display:flex; align-items:center; gap:12px; padding:15px; border-bottom:1px solid #eee; cursor:pointer; }
+.btn { width:65px; height:65px; border-radius:50%; border:none; font-size:32px; background:var(--card); box-shadow:0 5px 20px rgba(0,0,0,0.1); cursor:pointer; }
+.chat-item { display:flex; align-items:center; gap:12px; padding:15px; border-bottom:1px solid var(--border); cursor:pointer; background:var(--card); }
 .chat-item img { width:55px; height:55px; border-radius:50%; object-fit:cover; }
-.chat-window { display:flex; flex-direction:column; height:calc(100vh - 120px); }
-.chat-header { padding:15px; border-bottom:1px solid #eee; display:flex; align-items:center; gap:10px; }
-.chat-messages { flex:1; padding:15px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
+.chat-window { display:flex; flex-direction:column; height:calc(100vh - 120px); background:var(--card); }
+.chat-header { padding:15px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; background:var(--card); }
+.chat-messages { flex:1; padding:15px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; background:var(--bg); }
 .msg { max-width:75%; padding:10px 14px; border-radius:18px; font-size:16px; }
 .msg.me { background:var(--pink); color:white; align-self:flex-end; }
-.msg.them { background:#E4E6EB; align-self:flex-start; }
-.chat-input { display:flex; padding:10px; border-top:1px solid #eee; gap:10px; }
-.chat-input input { flex:1; padding:12px; border-radius:20px; border:1px solid #ddd; font-size:16px; }
+.msg.them { background:var(--border); color:var(--text); align-self:flex-start; }
+.chat-input { display:flex; padding:10px; border-top:1px solid var(--border); gap:10px; background:var(--card); }
+.chat-input input { flex:1; padding:12px; border-radius:20px; border:1px solid var(--border); font-size:16px; background:var(--bg); color:var(--text); }
 .chat-input button { padding:12px 20px; background:var(--pink); color:white; border:none; border-radius:20px; font-weight:600; font-size:16px; }
 .profile-edit { padding:20px; }
-.profile-edit img { width:120px; height:120px; border-radius:50%; object-fit:cover; display:block; margin:20px auto; border:3px solid var(--pink); background:#f0f0f0; }
+.profile-edit img { width:120px; height:120px; border-radius:50%; object-fit:cover; display:block; margin:20px auto; border:3px solid var(--pink); }
 .profile-edit button { width:100%; padding:14px; background:var(--pink); color:white; border:none; border-radius:12px; font-weight:600; cursor:pointer; margin-top:10px; font-size:16px; }
 .verify-btn { background:#0084FF!important; }
 .video-btn { background:var(--blue)!important; }
@@ -49,6 +62,14 @@ header { text-align:center; padding:15px; font-size:26px; font-weight:700; color
 #videoRoom { position:fixed; top:0; left:0; width:100%; height:100%; background:black; z-index:1000; }
 .loading { text-align:center; padding:50px; font-size:18px; }
 .back-btn { cursor:pointer; font-size:24px; }
+.setting-item { padding:15px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.setting-item select { padding:8px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); }
+.switch { position:relative; display:inline-block; width:50px; height:24px; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#ccc; transition:.4s; border-radius:24px; }
+.slider:before { position:absolute; content:""; height:18px; width:18px; left:3px; bottom:3px; background:white; transition:.4s; border-radius:50%; }
+input:checked +.slider { background:var(--pink); }
+input:checked +.slider:before { transform:translateX(26px); }
 </style>
 </head>
 <body>
@@ -62,24 +83,25 @@ header { text-align:center; padding:15px; font-size:26px; font-weight:700; color
     <input id="username" placeholder="Username">
     <input id="email" placeholder="Email" type="email">
     <input id="pass" type="password" placeholder="Password">
-    <button onclick="signup()">Sign Up</button>
-    <button onclick="login()" style="background:#333;">Login</button>
+    <button onclick="signup()" id="btnSignup">Sign Up</button>
+    <button onclick="login()" style="background:#333;" id="btnLogin">Login</button>
   </div>
 </div>
 
 <div id="appScreen" class="screen hidden">
-  <header>SparkUp <span>⚡</span></header>
+  <header id="appTitle">SparkUp <span>⚡</span></header>
   <div class="tabs">
-    <div class="tab active" onclick="showTab('dating', this)">❤️ Discover</div>
-    <div class="tab" onclick="showTab('chat', this)">💬 Chat</div>
-    <div class="tab" onclick="showTab('profile', this)">👤 Me</div>
+    <div class="tab active" onclick="showTab('dating', this)" id="tabDiscover">❤️ Discover</div>
+    <div class="tab" onclick="showTab('chat', this)" id="tabChat">💬 Chat</div>
+    <div class="tab" onclick="showTab('profile', this)" id="tabProfile">👤 Me</div>
+    <div class="tab" onclick="showTab('settings', this)" id="tabSettings">⚙️ Settings</div>
   </div>
 
   <div id="datingTab">
     <div class="filter-bar">
-      <input id="filterAgeMin" type="number" placeholder="Min Age" value="18">
-      <input id="filterAgeMax" type="number" placeholder="Max Age" value="50">
-      <button onclick="loadProfiles()">Filter</button>
+      <input id="filterAgeMin" type="number" placeholder="Min Age">
+      <input id="filterAgeMax" type="number" placeholder="Max Age">
+      <button onclick="loadProfiles()" id="btnFilter">Filter</button>
     </div>
     <div class="card-wrapper"><div id="cardStack" class="loading">Loading...</div></div>
     <div class="buttons"><button class="btn" onclick="swipe('pass')" style="color:#FF2D55">✕</button><button class="btn" onclick="swipe('like')" style="color:#00D084">❤️</button></div>
@@ -97,26 +119,51 @@ header { text-align:center; padding:15px; font-size:26px; font-weight:700; color
       <div id="chatMessages" class="chat-messages"></div>
       <div class="chat-input">
         <input id="messageInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
-        <button onclick="sendMessage()">Send</button>
+        <button onclick="sendMessage()" id="btnSend">Send</button>
       </div>
     </div>
   </div>
 
   <div id="profileTab" class="hidden">
     <div class="profile-edit">
-      <h2>Edit Profile</h2>
-      <img id="profilePic" src="https://i.pravatar.cc/400">
-      <input type="file" id="photoUpload" accept="image/*" onchange="uploadPhoto(event)">
+      <h2 id="editTitle">Edit Profile</h2>
+      <img id="profilePic" src="">
       <input id="editName" placeholder="Your Name">
       <div id="nameError" class="error">Please enter your name</div>
       <input id="editAge" type="number" placeholder="Your Age">
       <div id="ageError" class="error">Age must be 18+</div>
+      <select id="editGender" onchange="updatePreview()">
+        <option value="">Select Gender</option>
+        <option value="male">Male 👨</option>
+        <option value="female">Female 👩</option>
+      </select>
+      <div id="genderError" class="error">Please select gender</div>
       <textarea id="editBio" placeholder="Your Bio" rows="3"></textarea>
       <div id="bioError" class="error">Please write a bio</div>
-      <button onclick="saveProfile()">Save Changes</button>
-      <button class="verify-btn" onclick="requestVerify()">Get Verified Badge ✅</button>
+      <button onclick="saveProfile()" id="btnSave">Save Changes</button>
+      <button class="verify-btn" onclick="requestVerify()" id="btnVerify">Get Verified Badge ✅</button>
       <div id="successMsg" class="success">✅ Profile Saved!</div>
-      <button onclick="logout()" style="background:#333;">Logout</button>
+      <button onclick="logout()" style="background:#333;" id="btnLogout">Logout</button>
+    </div>
+  </div>
+
+  <div id="settingsTab" class="hidden">
+    <div class="profile-edit">
+      <h2 id="settingsTitle">Settings</h2>
+      <div class="setting-item">
+        <span id="langLabel">Language</span>
+        <select id="languageSelect" onchange="changeLanguage()">
+          <option value="en">English</option>
+          <option value="ha">Hausa</option>
+        </select>
+      </div>
+      <div class="setting-item">
+        <span id="modeLabel">Dark Mode</span>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
   </div>
 </div>
@@ -128,10 +175,78 @@ const SUPABASE_URL = 'https://tioybcymiumvvaysxjjt.supabase.co'
 const SUPABASE_KEY = 'sb_publishable_Y0uC4I6nnLejVficJnh9Ow_fEK4hNyh'
 const supa = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 
-let user = null; let profiles = []; let currentIndex = 0; let myProfile = null; let selectedFile = null; let matches = []; let api = null;
+let user = null; let profiles = []; let currentIndex = 0; let myProfile = null; let matches = []; let api = null;
 let currentChatUserId = null; let currentChatMatchId = null; let messageSubscription = null;
 
-function getAvatarUrl(userId){ return `${SUPABASE_URL}/storage/v1/object/public/Avatars/${userId}.jpg?v=${Date.now()}` }
+const translations = {
+  en: {
+    signup: "Sign Up", login: "Login", discover: "❤️ Discover", chat: "💬 Chat", me: "👤 Me", settings: "⚙️ Settings",
+    minAge: "Min Age", maxAge: "Max Age", filter: "Filter", send: "Send", editProfile: "Edit Profile",
+    yourName: "Your Name", yourAge: "Your Age", selectGender: "Select Gender", male: "Male 👨", female: "Female 👩",
+    yourBio: "Your Bio", save: "Save Changes", verify: "Get Verified Badge ✅", logout: "Logout",
+    language: "Language", darkMode: "Dark Mode", loading: "Loading...", noMore: "No more profiles 😔", noMatches: "No matches yet",
+    match: "🎉 It's a Match with ", verified: "✅ Verified! You now have the blue badge ✓", saved: "✅ Profile Saved!"
+  },
+  ha: {
+    signup: "Yi Rijista", login: "Shiga", discover: "❤️ Nema", chat: "💬 Taɗi", me: "👤 Ni", settings: "⚙️ Saiti",
+    minAge: "Ƙaramin Shekara", maxAge: "Matsakaicin Shekara", filter: "Tace", send: "Aika", editProfile: "Gyara Bayani",
+    yourName: "Sunan Ka", yourAge: "Shekarun Ka", selectGender: "Zaɓi Jinsi", male: "Namiji 👨", female: "Mace 👩",
+    yourBio: "Game da Kai", save: "Ajiye Canji", verify: "Samu Badge na Tabbata ✅", logout: "Fita",
+    language: "Harshe", darkMode: "Yanayin Duhu", loading: "Ana Loading...", noMore: "Babban bayanin 😔", noMatches: "Babu match tukuna",
+    match: "🎉 Kun yi Match da ", verified: "✅ An Tabbatar da Kai! Yanzu kana da badge na shuɗi ✓", saved: "✅ An Ajiye Bayani!"
+  }
+};
+
+let currentLang = localStorage.getItem('lang') || 'en';
+let darkMode = localStorage.getItem('dark') === 'true';
+
+async function getAvatar(name, gender, id, savedUrl){
+  if(savedUrl) return savedUrl;
+  let hash = 0;
+  for(let i = 0; i < id.length; i++) hash = id.charCodeAt(i) + ((hash << 5) - hash);
+  let color = (hash & 0x00FFFFFF).toString(16).toUpperCase();
+  color = "00000".substring(0, 6 - color.length) + color;
+  let style = gender === 'female'
+? `3D golden name "${name}" with #${color} floral frame, luxury flowers and diamonds, black background, elegant royal queen design, highly detailed`
+  : `3D golden name "${name}" with #${color} luxury frame, gold crown and gems, black background, masculine king design, highly detailed`;
+  let newUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(style)}?width=400&height=400&seed=${id + name}`;
+  await supa.from('profiles').update({avatar_url: newUrl}).eq('id', id);
+  return newUrl;
+}
+
+function applyLanguage(){
+  const t = translations[currentLang];
+  btnSignup.innerText = t.signup; btnLogin.innerText = t.login;
+  tabDiscover.innerText = t.discover; tabChat.innerText = t.chat; tabProfile.innerText = t.me; tabSettings.innerText = t.settings;
+  filterAgeMin.placeholder = t.minAge; filterAgeMax.placeholder = t.maxAge; btnFilter.innerText = t.filter;
+  btnSend.innerText = t.send; editTitle.innerText = t.editProfile; editName.placeholder = t.yourName;
+  editAge.placeholder = t.yourAge; editGender.options[0].text = t.selectGender; editGender.options[1].text = t.male;
+  editGender.options[2].text = t.female; editBio.placeholder = t.yourBio; btnSave.innerText = t.save;
+  btnVerify.innerText = t.verify; btnLogout.innerText = t.logout; settingsTitle.innerText = t.settings;
+  langLabel.innerText = t.language; modeLabel.innerText = t.darkMode;
+  document.getElementById('languageSelect').value = currentLang;
+  document.getElementById('darkModeToggle').checked = darkMode;
+}
+
+function changeLanguage(){
+  currentLang = languageSelect.value;
+  localStorage.setItem('lang', currentLang);
+  applyLanguage();
+}
+
+function toggleDarkMode(){
+  darkMode = darkModeToggle.checked;
+  localStorage.setItem('dark', darkMode);
+  if(darkMode) document.body.classList.add('dark'); else document.body.classList.remove('dark');
+}
+
+async function updatePreview(){
+  let name = editName.value || 'User';
+  let gender = editGender.value;
+  if(name && gender && user){
+    profilePic.src = await getAvatar(name, gender, user.id, null);
+  }
+}
 
 supa.auth.getSession().then(({data}) => { if(data.session) loadUser(data.session.user) });
 
@@ -139,7 +254,7 @@ async function signup(){
   if(!username.value ||!email.value ||!pass.value) return alert('Fill all fields');
   let {data,error}=await supa.auth.signUp({email:email.value,password:pass.value});
   if(error) return alert(error.message);
-  await supa.from('profiles').insert([{id:data.user.id, username:username.value, name:username.value, age:18, bio:'Hello', has_photo:false, verified:false}]);
+  await supa.from('profiles').insert([{id:data.user.id, username:username.value, name:username.value, age:18, bio:'Hello', gender:'', verified:false, avatar_url:''}]);
   loadUser(data.user);
 }
 
@@ -153,14 +268,15 @@ async function loadUser(u){
   user = u;
   let {data} = await supa.from('profiles').select('*').eq('id', user.id).maybeSingle();
   if(!data){
-    await supa.from('profiles').insert([{id:user.id, username:email.value.split('@')[0], name:email.value.split('@')[0], age:18, bio:'Hello', has_photo:false, verified:false}]);
+    await supa.from('profiles').insert([{id:user.id, username:email.value.split('@')[0], name:email.value.split('@')[0], age:18, bio:'Hello', gender:'', verified:false, avatar_url:''}]);
     let {data:newData} = await supa.from('profiles').select('*').eq('id', user.id).single();
     data = newData;
   }
   myProfile = data;
   authScreen.classList.add('hidden'); appScreen.classList.remove('hidden');
+  if(darkMode) document.body.classList.add('dark');
+  applyLanguage();
   loadProfiles(); loadMatches();
-  setInterval(checkNotifications, 10000);
 }
 
 async function loadProfiles(){
@@ -169,10 +285,11 @@ async function loadProfiles(){
   profiles = data || []; currentIndex = 0; renderCard();
 }
 
-function renderCard(){
-  if(currentIndex >= profiles.length) return cardStack.innerHTML='<h2 style="text-align:center; padding:50px;">No more profiles 😔</h2>';
+async function renderCard(){
+  const t = translations[currentLang];
+  if(currentIndex >= profiles.length) return cardStack.innerHTML=`<h2 style="text-align:center; padding:50px;">${t.noMore}</h2>`;
   let p = profiles[currentIndex];
-  let pic = p.has_photo? getAvatarUrl(p.id) : `https://i.pravatar.cc/400?u=${p.id}`;
+  let pic = await getAvatar(p.name, p.gender, p.id, p.avatar_url);
   cardStack.innerHTML = `<div class="card" style="background-image:url(${pic})"><div class="card-info"><h2>${p.name}, ${p.age} ${p.verified? '<span class="verify">✓</span>' : ''}</h2><p>${p.bio}</p></div></div>`;
 }
 
@@ -187,20 +304,21 @@ async function checkMatch(otherId, otherName){
   let {data} = await supa.from('swipes').select('*').eq('swiper_id', otherId).eq('swiped_id', user.id).eq('type', 'like').maybeSingle();
   if(data){
     await supa.from('matches').insert([{user1_id:user.id, user2_id:otherId}]);
-    showNotification(`🎉 It's a Match with ${otherName}!`);
+    showNotification(translations[currentLang].match + otherName + '!');
     loadMatches();
   }
 }
 
 async function loadMatches(){
+  const t = translations[currentLang];
   let {data} = await supa.from('matches').select('*').or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`);
   matches = data || [];
   chatList.innerHTML = '';
-  if(matches.length === 0) return chatList.innerHTML = '<p style="padding:20px; text-align:center;">No matches yet</p>';
+  if(matches.length === 0) return chatList.innerHTML = `<p style="padding:20px; text-align:center;">${t.noMatches}</p>`;
   for(let m of matches){
     let otherId = m.user1_id === user.id? m.user2_id : m.user1_id;
     let {data:p} = await supa.from('profiles').select('*').eq('id', otherId).single();
-    let pic = p.has_photo? getAvatarUrl(p.id) : `https://i.pravatar.cc/400?u=${p.id}`;
+    let pic = await getAvatar(p.name, p.gender, p.id, p.avatar_url);
     chatList.innerHTML += `<div class="chat-item" onclick="openChat('${otherId}', '${m.id}', '${p.name}', '${pic}')"><img src="${pic}"><div style="flex:1;"><h4>${p.name} ${p.verified? '<span class="verify">✓</span>' : ''}</h4><p>Tap to chat</p></div></div>`;
   }
 }
@@ -246,19 +364,13 @@ function endVideoCall(){ if(api) api.dispose(); videoRoom.classList.add('hidden'
 
 function showNotification(msg){
   notification.innerText = msg; notification.style.display = 'block';
-  if("Notification" in window && Notification.permission === "granted"){
-    new Notification("SparkUp", {body: msg});
-  }
   setTimeout(()=>notification.style.display='none', 4000);
-}
-async function checkNotifications(){
-  if("Notification" in window && Notification.permission!== "granted"){ Notification.requestPermission(); }
 }
 
 function showTab(tab, el){
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  datingTab.classList.add('hidden'); chatTab.classList.add('hidden'); profileTab.classList.add('hidden');
+  datingTab.classList.add('hidden'); chatTab.classList.add('hidden'); profileTab.classList.add('hidden'); settingsTab.classList.add('hidden');
   document.getElementById(tab+'Tab').classList.remove('hidden');
   if(tab === 'profile') loadMyProfile();
   if(tab === 'chat') loadMatches();
@@ -267,32 +379,32 @@ function showTab(tab, el){
 async function loadMyProfile(){
   let {data} = await supa.from('profiles').select('*').eq('id', user.id).single();
   myProfile = data;
-  let pic = myProfile.has_photo? getAvatarUrl(user.id) : `https://i.pravatar.cc/400?u=${user.id}`;
-  profilePic.src = pic; editName.value = myProfile.name || ''; editAge.value = myProfile.age || ''; editBio.value = myProfile.bio || '';
+  profilePic.src = await getAvatar(myProfile.name, myProfile.gender, myProfile.id, myProfile.avatar_url);
+  editName.value = myProfile.name || '';
+  editAge.value = myProfile.age || '';
+  editBio.value = myProfile.bio || '';
+  editGender.value = myProfile.gender || '';
 }
-
-function uploadPhoto(e){ selectedFile = e.target.files[0]; if(selectedFile){ profilePic.src = URL.createObjectURL(selectedFile); } }
 
 async function saveProfile(){
   document.querySelectorAll('.error').forEach(e => e.style.display='none'); successMsg.style.display='none';
   if(!editName.value.trim()) return nameError.style.display='block';
   if(!editAge.value || editAge.value < 18) return ageError.style.display='block';
+  if(!editGender.value) return genderError.style.display='block';
   if(!editBio.value.trim()) return bioError.style.display='block';
-  let hasPhoto = myProfile.has_photo;
-  if(selectedFile){
-    let fileName = user.id + '.jpg';
-    let {error: uploadError} = await supa.storage.from('Avatars').upload(fileName, selectedFile, {upsert: true, contentType: 'image/jpeg', cacheControl: '0'});
-    if(uploadError) return alert('Photo Upload Error: '+uploadError.message);
-    hasPhoto = true; selectedFile = null;
-  }
-  let {error: updateError} = await supa.from('profiles').update({name: editName.value.trim(), age: parseInt(editAge.value), bio: editBio.value.trim(), has_photo: hasPhoto}).eq('id', user.id);
+  let newAvatar = null;
+  if(editName.value.trim()!== myProfile.name || editGender.value!== myProfile.gender){ newAvatar = ''; }
+  let {error: updateError} = await supa.from('profiles').update({
+    name: editName.value.trim(), age: parseInt(editAge.value), gender: editGender.value, bio: editBio.value.trim(),
+    avatar_url: newAvatar!== null? newAvatar : myProfile.avatar_url
+  }).eq('id', user.id);
   if(updateError) return alert('Database Save Error: '+updateError.message);
-  await loadMyProfile(); successMsg.style.display='block'; setTimeout(()=>successMsg.style.display='none', 3000);
+  await loadMyProfile(); successMsg.innerText = translations[currentLang].saved; successMsg.style.display='block'; setTimeout(()=>successMsg.style.display='none', 3000);
 }
 
-async function requestVerify(){ await supa.from('profiles').update({verified: true}).eq('id', user.id); alert('✅ Verified! You now have the blue badge ✓'); loadMyProfile(); }
+async function requestVerify(){ await supa.from('profiles').update({verified: true}).eq('id', user.id); alert(translations[currentLang].verified); loadMyProfile(); }
 async function logout(){ await supa.auth.signOut(); location.reload(); }
 document.addEventListener('keydown', (e) => { if(e.key === 'Escape') endVideoCall(); });
 </script>
 </body>
-                                  </html>
+    </html>
